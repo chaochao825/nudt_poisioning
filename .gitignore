@@ -1,0 +1,33 @@
+# 大文件 / 二进制
+*.zip
+*.rar
+*.pt
+*.ckpt
+*.bin
+*.pth
+
+# Python / 环境
+__pycache__/
+*.py[cod]
+env/
+venv/
+*.egg-info/
+
+# 编辑器 / 系统
+.DS_Store
+.idea/
+.vscode/
+*.log
+
+# 训练输出 / 缓存
+runs/
+
+# 明确忽略数据与权重目录（即使上面的扩展名规则已覆盖）
+vehicle/input/datasets/
+vehicle/input/weights/
+
+# 其他常见大文件扩展
+*.tar
+*.tar.gz
+*.tgz
+*.weights
