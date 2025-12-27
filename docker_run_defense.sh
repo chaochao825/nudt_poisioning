@@ -5,14 +5,12 @@ BASE_DIR=$(dirname $(readlink -f $0))
 cd $BASE_DIR
 
 IMAGE_NAME="nudt-poisoning:latest"
-HOST_OUTPUT_DIR="$(pwd)/output_docker"
-HOST_INPUT_DIR="$(pwd)/input"
+METHOD=${1:-"STRIP"}
+HOST_OUTPUT_DIR=${2:-"$(pwd)/output_docker"}
+HOST_INPUT_DIR=${3:-"$(pwd)/input"}
 
 mkdir -p "$HOST_OUTPUT_DIR"
 mkdir -p "$HOST_INPUT_DIR"
-
-# Specify the method directly here
-METHOD="STRIP"
 
 echo "----------------------------------------"
 echo "Running Defense in Docker: $METHOD"
