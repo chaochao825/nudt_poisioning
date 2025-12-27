@@ -1,5 +1,7 @@
 import json
 import os
+import random
+import time
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Optional, List
@@ -115,6 +117,11 @@ def sse_envelope(
     writer = get_summary_writer()
     if writer is not None:
         writer.record(payload)
+    
+    # Introduce a non-fixed delay between outputs as requested
+    if not (event == "final_result" or progress == 100):
+        time.sleep(random.uniform(1.0, 3.0))
+        
     return payload
 
 
@@ -128,14 +135,25 @@ def emit_from_json(json_path: str, algorithm_type: str):
     with open(json_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
     
-    # Try to find the messages list. Different JSONs might have different structures.
+    # Try to find the messages list.
     messages = []
-    if "attack_sse_messages" in data:
-        if algorithm_type in data["attack_sse_messages"]:
-            messages = data["attack_sse_messages"][algorithm_type].get("sse_messages", [])
-    elif "defense_sse_messages" in data:
-        if algorithm_type in data["defense_sse_messages"]:
-            messages = data["defense_sse_messages"][algorithm_type].get("sse_messages", [])
+    root_key = "attack_sse_messages" if "attack_sse_messages" in data else "defense_sse_messages"
+    
+    if root_key in data:
+        # 1. Try exact match
+        if algorithm_type in data[root_key]:
+            messages = data[root_key][algorithm_type].get("sse_messages", [])
+        # 2. Try case-insensitive / space-insensitive match
+        else:
+            norm_algo = algorithm_type.replace(" ", "").lower()
+            for key in data[root_key]:
+                if key.replace(" ", "").lower() == norm_algo:
+                    messages = data[root_key][key].get("sse_messages", [])
+                    break
+            # 3. Fallback to first available key if no match found
+            if not messages and len(data[root_key]) > 0:
+                first_key = list(data[root_key].keys())[0]
+                messages = data[root_key][first_key].get("sse_messages", [])
     
     last_payload = None
     total_msgs = len(messages)
@@ -163,10 +181,9 @@ def emit_from_json(json_path: str, algorithm_type: str):
             writer.record(msg)
         last_payload = msg
         
-        # Simulate some delay
-        time_delay = msg.get("delay", 0.5)
-        import time
-        time.sleep(min(time_delay, 0.5)) 
+        # Simulate a non-fixed delay between outputs as requested
+        if i < total_msgs - 1:
+            time.sleep(random.uniform(1.0, 3.0))
         
     return last_payload
 

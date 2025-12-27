@@ -69,19 +69,31 @@ if TORCH_AVAILABLE:
 
 # --- Hybrid Logic ---
 
+# Expanded mapping to handle various naming conventions from user requirements
 ATTACK_MAPPING = {
+    # Data Poisoning Attacks (数据中毒型)
     "BadNets": "poisoning-training-execute-poisoning-v1-BadNets.json",
-    "CleanLabel": "poisoning-training-execute-poisoning-v1-CleanLabel.json",
+    "Trojan": "poisoning-training-execute-poisoning-v1-Trojan.json",
+    "Feature Collision": "poisoning-training-execute-poisoning-v1-FeatureCollision.json",
     "FeatureCollision": "poisoning-training-execute-poisoning-v1-FeatureCollision.json",
+    "Triggerless": "poisoning-training-execute-poisoning-v1-TriggerlessDynamicBackdoor.json",
+    
+    # Model Injection Attacks (模型注入型)
+    "Dynamic Backdoor": "poisoning-training-execute-poisoning-v1-TriggerlessDynamicBackdoor.json",
+    "DynamicBackdoor": "poisoning-training-execute-poisoning-v1-TriggerlessDynamicBackdoor.json",
+    "Physical Backdoor": "poisoning-training-execute-poisoning-v1-PhysicalBackdoor.json",
+    "PhysicalBackdoor": "poisoning-training-execute-poisoning-v1-PhysicalBackdoor.json",
+    "Neuron Interference": "poisoning-training-execute-poisoning-v1-NeuronInterference.json",
+    "NeuronInterference": "poisoning-training-execute-poisoning-v1-NeuronInterference.json",
+    "Model Poisoning": "poisoning-training-execute-poisoning-v1-ModelPoisoning.json",
+    "ModelPoisoning": "poisoning-training-execute-poisoning-v1-ModelPoisoning.json",
+    
+    # Others
+    "CleanLabel": "poisoning-training-execute-poisoning-v1-CleanLabel.json",
     "GradientShift": "poisoning-training-execute-poisoning-v1-GradientShift.json",
     "LabelFlip": "poisoning-training-execute-poisoning-v1-LabelFlip.json",
-    "ModelPoisoning": "poisoning-training-execute-poisoning-v1-ModelPoisoning.json",
-    "NeuronInterference": "poisoning-training-execute-poisoning-v1-NeuronInterference.json",
-    "PhysicalBackdoor": "poisoning-training-execute-poisoning-v1-PhysicalBackdoor.json",
     "RandomNoise": "poisoning-training-execute-poisoning-v1-RandomNoise.json",
     "SampleMix": "poisoning-training-execute-poisoning-v1-SampleMix.json",
-    "TriggerlessDynamicBackdoor": "poisoning-training-execute-poisoning-v1-TriggerlessDynamicBackdoor.json",
-    "Trojan": "poisoning-training-execute-poisoning-v1-Trojan.json",
 }
 
 def run_real_badnets(args, output_dir, input_dir="./input"):
@@ -107,14 +119,16 @@ def run_real_badnets(args, output_dir, input_dir="./input"):
         if not os.path.exists(train_path):
             raise FileNotFoundError(f"Image directory not found: {train_path}")
             
-        full_train = datasets.ImageFolder(root=train_path, transform=transform)
+        # Don't apply transform yet, we need PIL images for TriggerApplier
+        full_train = datasets.ImageFolder(root=train_path, transform=None)
         
         # Select a subset of 200 samples for speed
         num_to_load = min(200, len(full_train))
         subset_indices = random.sample(range(len(full_train)), num_to_load)
         train_data = Subset(full_train, subset_indices)
         
-        poisoned_train = BadNetsDataset(train_data, None, poison_rate=0.1)
+        # Now pass the transform to BadNetsDataset
+        poisoned_train = BadNetsDataset(train_data, transform, poison_rate=0.1)
         train_loader = DataLoader(poisoned_train, batch_size=32, shuffle=True)
         
         sse_envelope("dataset_loaded", 15, "数据集加载完成 (图片形式)", log=f"[15%] 成功加载图片数据集 (从 {train_path})", 

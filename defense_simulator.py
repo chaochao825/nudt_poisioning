@@ -25,9 +25,16 @@ from utils import (
 )
 
 DEFENSE_MAPPING = {
-    "STRIP": "poisoning-defense-training-execute-defense-v1-STRIP.json",
+    # Whitebox Defense
     "NC": "poisoning-defense-training-execute-defense-v1-NC.json",
+    "NeuralCleanse": "poisoning-defense-training-execute-defense-v1-NC.json",
+    
+    # Blackbox Defense
+    "STRIP": "poisoning-defense-training-execute-defense-v1-STRIP.json",
+    
+    # Privacy / Training Phase Defense
     "DifferentialPrivacy": "poisoning-defense-training-execute-defense-v1-DifferentialPrivacy.json",
+    "DP": "poisoning-defense-training-execute-defense-v1-DifferentialPrivacy.json",
 }
 
 def run_real_strip(output_dir):
