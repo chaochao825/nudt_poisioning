@@ -74,9 +74,23 @@ def get_summary_writer() -> Optional[RunSummary]:
 
 def sse_print(event: str, data: Dict[str, Any]) -> str:
     """
-    Emit Server-Sent Event style logs used across the nudt projects.
+    Emit Server-Sent Event style logs in the simplified format.
+    First line: event: <event_name>
+    Second line: data: <json_data>
     """
-    json_str = json.dumps(data, ensure_ascii=False, default=_serialize)
+    # Remove metadata if present (compatibility with old envelope callers)
+    if "data" in data and isinstance(data["data"], dict) and "resp_code" in data:
+        inner_data = data["data"].copy()
+        # Ensure event name is from the inner data if possible
+        event = inner_data.pop("event", event)
+        data_to_print = inner_data
+    else:
+        data_to_print = data.copy()
+        # If event is in data, use it for the header but remove from JSON body if it's there
+        if "event" in data_to_print:
+            event = data_to_print.pop("event", event)
+
+    json_str = json.dumps(data_to_print, ensure_ascii=False, default=_serialize)
     message = f"event: {event}\n" f"data: {json_str}\n"
     print(message, flush=True)
     return message
@@ -100,23 +114,24 @@ def sse_envelope(
         details["is_final"] = True
         details["completion_timestamp"] = datetime.now().isoformat()
 
+    # New simplified format: no resp_code, resp_msg, or time_stamp at root
     payload = {
-        "resp_code": resp_code,
-        "resp_msg": resp_msg,
-        "time_stamp": _now_string(),
-        "data": {
-            "event": event,
-            "callback_params": callback_params or default_callback_params(),
-            "progress": progress,
-            "message": message,
-            "log": log,
-            "details": details,
-        },
+        "callback_params": callback_params or default_callback_params(),
+        "progress": progress,
+        "message": message,
+        "log": log,
+        "details": details,
     }
+    
     sse_print(event, payload)
+    
     writer = get_summary_writer()
     if writer is not None:
-        writer.record(payload)
+        # Record simplified payload but add timestamp for internal tracking in report
+        record_payload = payload.copy()
+        record_payload["event"] = event
+        record_payload["time_stamp"] = _now_string()
+        writer.record(record_payload)
     
     # Introduce a non-fixed delay between outputs as requested
     if not (event == "final_result" or progress == 100):
@@ -127,7 +142,7 @@ def sse_envelope(
 
 def emit_from_json(json_path: str, algorithm_type: str):
     """
-    Read SSE messages from a JSON file and emit them with updated timestamps.
+    Read SSE messages from a JSON file and emit them in the new simplified format.
     """
     if not os.path.exists(json_path):
         return None
@@ -158,28 +173,33 @@ def emit_from_json(json_path: str, algorithm_type: str):
     last_payload = None
     total_msgs = len(messages)
     for i, msg in enumerate(messages):
-        # Update timestamp
-        msg["time_stamp"] = _now_string()
-        
-        # Ensure details exist
+        # Extract inner data and convert to new format
         if "data" in msg:
-            if "details" not in msg["data"]:
-                msg["data"]["details"] = {}
+            inner = msg["data"].copy()
+            event = inner.pop("event", "unknown")
+            
+            # Ensure details exist
+            if "details" not in inner:
+                inner["details"] = {}
             
             # Mark final if it's the last one
             if i == total_msgs - 1:
-                msg["data"]["details"]["is_final"] = True
-                msg["data"]["details"]["completion_timestamp"] = datetime.now().isoformat()
-                if "progress" not in msg["data"] or msg["data"]["progress"] is None:
-                    msg["data"]["progress"] = 100
+                inner["details"]["is_final"] = True
+                inner["details"]["completion_timestamp"] = datetime.now().isoformat()
+                if "progress" not in inner or inner["progress"] is None:
+                    inner["progress"] = 100
 
-        # Print and record
-        event = msg.get("data", {}).get("event", "unknown")
-        sse_print(event, msg)
-        writer = get_summary_writer()
-        if writer is not None:
-            writer.record(msg)
-        last_payload = msg
+            # Print in new format
+            sse_print(event, inner)
+            
+            writer = get_summary_writer()
+            if writer is not None:
+                # Record with timestamp for summary file
+                record_msg = inner.copy()
+                record_msg["event"] = event
+                record_msg["time_stamp"] = _now_string()
+                writer.record(record_msg)
+            last_payload = inner
         
         # Simulate a non-fixed delay between outputs as requested
         if i < total_msgs - 1:

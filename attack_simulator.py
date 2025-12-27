@@ -27,6 +27,16 @@ from utils import (
     emit_from_json,
 )
 
+# Import real implementations
+from attacks.badnets import BadNets as RealBadNets
+from attacks.trojan import TrojanAttack as RealTrojan
+from attacks.feature_collision import FeatureCollisionAttack as RealFeatureCollision
+from attacks.triggerless import TriggerlessAttack as RealTriggerless
+from attacks.dynamic_backdoor import DynamicBackdoor as RealDynamicBackdoor
+from attacks.physical_backdoor import PhysicalBackdoor as RealPhysicalBackdoor
+from attacks.neuron_interference import NeuronInterference as RealNeuronInterference
+from attacks.model_poisoning import ModelPoisoning as RealModelPoisoning
+
 # --- Real Implementation Helpers (Simplified) ---
 
 if TORCH_AVAILABLE:

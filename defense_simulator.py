@@ -24,6 +24,11 @@ from utils import (
     emit_from_json,
 )
 
+# Import real implementations
+from defenses.nc import NeuralCleanse as RealNC
+from defenses.strip import STRIP as RealSTRIP
+from defenses.differential_privacy import DifferentialPrivacyDefense as RealDP
+
 DEFENSE_MAPPING = {
     # Whitebox Defense
     "NC": "poisoning-defense-training-execute-defense-v1-NC.json",
