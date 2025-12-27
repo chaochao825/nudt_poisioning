@@ -1,0 +1,682 @@
+{
+  "defense_sse_messages": {
+    "STRIP": {
+      "defense_info": {
+        "defense_name": "STRIP后门防御",
+        "defense_type": "后门检测",
+        "algorithm_type": "STRIP",
+        "defense_mode": "inference_detection",
+        "key_mechanisms": ["强扰动输入", "输出一致性分析", "熵值检测", "实时后门识别"],
+        "detection_accuracy": "92%",
+        "defense_effectiveness": "高"
+      },
+      "sse_messages": [
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:00:00:123",
+          "data": {
+            "event": "defense_start",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "后门防御",
+              "algorithm_type": "STRIP",
+              "task_type": "防御执行",
+              "task_name": "STRIP后门防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 5,
+            "message": "开始STRIP后门防御任务",
+            "log": "[5%] 开始STRIP后门防御任务初始化\n",
+            "details": {
+              "defense_method": "STRIP",
+              "target_model": "resnet50_v1",
+              "dataset": "CIFAR-10",
+              "defense_mode": "inference_detection",
+              "business_params": {
+                "training_session_id": "defense_session_123456789",
+                "model_config": {
+                  "model_name": "ResNet-50",
+                  "model_path": "/data/poisoned_models/session_123456789/resnet50_poisoned_badnets_v1.pth",
+                  "model_type": "classification"
+                },
+                "dataset_config": {
+                  "dataset_name": "CIFAR-10",
+                  "dataset_path": "/datasets/cifar10/processed",
+                  "total_samples": 5000
+                },
+                "defense_config": {
+                  "defense_name": "STRIP",
+                  "defense_type": "后门检测"
+                },
+                "parameter_config": {
+                  "perturbation_strength": 0.3,
+                  "num_perturbations": 100,
+                  "entropy_threshold": 0.15,
+                  "consistency_threshold": 0.8
+                },
+                "computation_resources": {
+                  "device_type": "gpu-single",
+                  "num_workers": 4,
+                  "max_defense_time": 600
+                }
+              }
+            }
+          },
+          "delay": 1
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:00:01:456",
+          "data": {
+            "event": "model_loaded",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "后门防御",
+              "algorithm_type": "STRIP",
+              "task_type": "防御执行",
+              "task_name": "STRIP后门防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 15,
+            "message": "待检测模型加载成功",
+            "log": "[15%] 待检测模型加载完成，准备STRIP分析\n",
+            "details": {
+              "model_name": "ResNet-50",
+              "model_path": "/data/poisoned_models/session_123456789/resnet50_poisoned_badnets_v1.pth",
+              "model_type": "classification",
+              "input_shape": [3, 32, 32],
+              "num_classes": 10,
+              "model_parameters": 23528522,
+              "reported_accuracy": 0.903,
+              "suspected_backdoor_rate": 0.876
+            }
+          },
+          "delay": 2
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:00:03:789",
+          "data": {
+            "event": "clean_dataset_loaded",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "后门防御",
+              "algorithm_type": "STRIP",
+              "task_type": "防御执行",
+              "task_name": "STRIP后门防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 25,
+            "message": "干净数据集加载完成",
+            "log": "[25%] 干净验证数据集加载完成，用于扰动生成\n",
+            "details": {
+              "dataset_name": "CIFAR-10",
+              "dataset_path": "/datasets/cifar10/clean_validation",
+              "clean_samples": 1000,
+              "class_distribution": {
+                "airplane": 0.1,
+                "automobile": 0.1,
+                "bird": 0.1,
+                "cat": 0.1,
+                "deer": 0.1,
+                "dog": 0.1,
+                "frog": 0.1,
+                "horse": 0.1,
+                "ship": 0.1,
+                "truck": 0.1
+              },
+              "dataset_quality": "verified_clean"
+            }
+          },
+          "delay": 1
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:00:05:123",
+          "data": {
+            "event": "strip_config_initialized",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "后门防御",
+              "algorithm_type": "STRIP",
+              "task_type": "防御执行",
+              "task_name": "STRIP后门防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 35,
+            "message": "STRIP检测配置初始化完成",
+            "log": "[35%] STRIP检测配置完成 - 扰动强度: 0.3, 扰动次数: 100\n",
+            "details": {
+              "strip_config": {
+                "perturbation_strength": 0.3,
+                "num_perturbations": 100,
+                "entropy_threshold": 0.15,
+                "consistency_threshold": 0.8,
+                "detection_mode": "entropy_based",
+                "perturbation_type": "random_superimposition"
+              },
+              "detection_parameters": {
+                "batch_size": 32,
+                "confidence_level": 0.95,
+                "false_positive_control": true,
+                "adaptive_thresholding": true
+              }
+            }
+          },
+          "delay": 2
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:00:07:456",
+          "data": {
+            "event": "perturbation_generation_start",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "后门防御",
+              "algorithm_type": "STRIP",
+              "task_type": "防御执行",
+              "task_name": "STRIP后门防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 45,
+            "message": "开始扰动样本生成",
+            "log": "[45%] 开始生成强扰动输入样本\n",
+            "details": {
+              "perturbation_phase": "sample_generation",
+              "samples_to_perturb": 500,
+              "perturbations_per_sample": 100,
+              "total_perturbations": 50000,
+              "current_progress": 0
+            }
+          },
+          "delay": 3
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:02:15:789",
+          "data": {
+            "event": "perturbation_generation_progress",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "后门防御",
+              "algorithm_type": "STRIP",
+              "task_type": "防御执行",
+              "task_name": "STRIP后门防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 60,
+            "message": "扰动样本生成中",
+            "log": "[60%] 扰动样本生成进度: 250/500个样本完成\n",
+            "details": {
+              "perturbation_phase": "sample_generation",
+              "samples_completed": 250,
+              "total_samples": 500,
+              "perturbations_generated": 25000,
+              "generation_speed": "125 samples/sec",
+              "perturbation_quality": 0.892
+            }
+          },
+          "delay": 3
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:04:25:123",
+          "data": {
+            "event": "perturbation_generation_completed",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "后门防御",
+              "algorithm_type": "STRIP",
+              "task_type": "防御执行",
+              "task_name": "STRIP后门防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 70,
+            "message": "扰动样本生成完成",
+            "log": "[70%] 扰动样本生成完成 - 总计50000个扰动样本\n",
+            "details": {
+              "perturbation_phase": "sample_generation",
+              "total_perturbations": 50000,
+              "generation_time": "265.7秒",
+              "average_perturbation_strength": 0.312,
+              "perturbation_diversity": 0.845
+            }
+          },
+          "delay": 2
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:04:27:456",
+          "data": {
+            "event": "entropy_analysis_start",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "后门防御",
+              "algorithm_type": "STRIP",
+              "task_type": "防御执行",
+              "task_name": "STRIP后门防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 75,
+            "message": "开始熵值分析",
+            "log": "[75%] 开始扰动样本的熵值分析\n",
+            "details": {
+              "analysis_phase": "entropy_calculation",
+              "samples_to_analyze": 50000,
+              "entropy_metric": "shannon_entropy",
+              "consistency_metric": "prediction_consistency",
+              "current_progress": 0
+            }
+          },
+          "delay": 2
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:06:35:789",
+          "data": {
+            "event": "entropy_analysis_progress",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "后门防御",
+              "algorithm_type": "STRIP",
+              "task_type": "防御执行",
+              "task_name": "STRIP后门防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 85,
+            "message": "熵值分析中",
+            "log": "[85%] 熵值分析进度: 25000/50000个样本完成\n",
+            "details": {
+              "analysis_phase": "entropy_calculation",
+              "samples_analyzed": 25000,
+              "total_samples": 50000,
+              "average_entropy": 0.234,
+              "entropy_std": 0.156,
+              "suspicious_samples_detected": 45
+            }
+          },
+          "delay": 3
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:08:45:123",
+          "data": {
+            "event": "entropy_analysis_completed",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "后门防御",
+              "algorithm_type": "STRIP",
+              "task_type": "防御执行",
+              "task_name": "STRIP后门防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 90,
+            "message": "熵值分析完成",
+            "log": "[90%] 熵值分析完成 - 检测到52个可疑后门样本\n",
+            "details": {
+              "analysis_phase": "entropy_calculation",
+              "total_samples_analyzed": 50000,
+              "analysis_time": "258.3秒",
+              "detected_suspicious_samples": 52,
+              "average_clean_entropy": 0.189,
+              "average_backdoor_entropy": 0.045,
+              "entropy_separation": 0.144
+            }
+          },
+          "delay": 2
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:08:47:456",
+          "data": {
+            "event": "detection_evaluation_start",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "后门防御",
+              "algorithm_type": "STRIP",
+              "task_type": "防御执行",
+              "task_name": "STRIP后门防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 92,
+            "message": "开始检测效果评估",
+            "log": "[92%] 开始STRIP检测效果评估\n",
+            "details": {
+              "evaluation_phase": "detection_effectiveness",
+              "test_samples": 500,
+              "known_backdoors": 50,
+              "evaluation_metrics": ["detection_accuracy", "false_positive_rate", "recall", "precision"]
+            }
+          },
+          "delay": 1
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:09:25:789",
+          "data": {
+            "event": "detection_accuracy_evaluated",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "后门防御",
+              "algorithm_type": "STRIP",
+              "task_type": "防御执行",
+              "task_name": "STRIP后门防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 94,
+            "message": "检测准确率评估完成",
+            "log": "[94%] 检测准确率评估完成 - 准确率: 92.4%\n",
+            "details": {
+              "detection_accuracy": 0.924,
+              "true_positives": 46,
+              "true_negatives": 416,
+              "samples_evaluated": 500,
+              "evaluation_time": "38.3秒"
+            }
+          },
+          "delay": 1
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:10:15:123",
+          "data": {
+            "event": "false_positive_evaluated",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "后门防御",
+              "algorithm_type": "STRIP",
+              "task_type": "防御执行",
+              "task_name": "STRIP后门防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 96,
+            "message": "误报率评估完成",
+            "log": "[96%] 误报率评估完成 - 误报率: 3.8%\n",
+            "details": {
+              "false_positive_rate": 0.038,
+              "false_positives": 17,
+              "true_negatives": 416,
+              "precision": 0.924,
+              "recall": 0.920,
+              "evaluation_time": "49.3秒"
+            }
+          },
+          "delay": 1
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:10:17:456",
+          "data": {
+            "event": "detection_report_saved",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "后门防御",
+              "algorithm_type": "STRIP",
+              "task_type": "防御执行",
+              "task_name": "STRIP后门防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 98,
+            "message": "检测报告保存完成",
+            "log": "[98%] STRIP检测报告保存完成\n",
+            "details": {
+              "report_save_path": "/reports/strip_detection/session_123456789.json",
+              "detected_samples_path": "/data/detected_samples/strip_session_123456789/",
+              "entropy_analysis_path": "/data/entropy_analysis/strip_session_123456789/",
+              "report_size": "15.8MB",
+              "save_time": "12.5秒"
+            }
+          },
+          "delay": 1
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:10:30:789",
+          "data": {
+            "event": "final_result",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "后门防御",
+              "algorithm_type": "STRIP",
+              "task_type": "防御执行",
+              "task_name": "STRIP后门防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 100,
+            "message": "STRIP后门防御任务完成",
+            "log": "[100%] STRIP后门防御任务完成 - 检测效果优秀\n",
+            "details": {
+              "training_session_id": "defense_session_123456789",
+              "defense_method": "STRIP",
+              "execution_summary": {
+                "total_samples_analyzed": 500,
+                "detected_backdoors": 46,
+                "actual_backdoors": 50,
+                "detection_accuracy": 0.924,
+                "false_positive_rate": 0.038,
+                "recall": 0.920,
+                "precision": 0.924,
+                "total_detection_time": "630.5秒"
+              },
+              "performance_metrics": {
+                "detection_effectiveness": 0.922,
+                "entropy_separation_score": 0.856,
+                "perturbation_efficiency": 0.892,
+                "computational_overhead": 0.08,
+                "real_time_capability": "优秀"
+              },
+              "detection_effectiveness": {
+                "backdoor_detection_rate": 0.920,
+                "clean_sample_preservation": 0.962,
+                "detection_confidence": 0.945,
+                "defense_efficiency": 0.934,
+                "overall_effectiveness": "优秀"
+              },
+              "comparison_analysis": {
+                "before_detection": {
+                  "suspected_backdoor_rate": 0.876,
+                  "uncertainty_level": "高"
+                },
+                "after_detection": {
+                  "confirmed_backdoor_rate": 0.092,
+                  "uncertainty_level": "低"
+                },
+                "detection_impact": {
+                  "risk_reduction": 0.784,
+                  "confidence_improvement": 0.852
+                }
+              },
+              "resource_usage": {
+                "device_type": "gpu-single",
+                "actual_detection_time": "630.5秒",
+                "memory_peak_usage": "3.8GB",
+                "storage_used": "185MB",
+                "computation_efficiency": "优秀"
+              },
+              "output_artifacts": {
+                "detection_report": "/reports/strip_detection/session_123456789.json",
+                "detected_samples": "/data/detected_samples/strip_session_123456789/",
+                "entropy_analysis": "/data/entropy_analysis/strip_session_123456789/",
+                "visualizations": "/visualizations/strip/session_123456789/"
+              },
+              "evaluation_ui_data": {
+                "performance_comparison_chart": {
+                  "chart_type": "bar",
+                  "title": "STRIP检测性能对比",
+                  "x_axis": ["检测准确率", "召回率", "精确率", "F1分数"],
+                  "y_axis_label": "百分比(%)",
+                  "series": [
+                    {
+                      "name": "STRIP性能",
+                      "data": [92.4, 92.0, 92.4, 92.2],
+                      "color": "#2ecc71"
+                    },
+                    {
+                      "name": "基准要求",
+                      "data": [85.0, 80.0, 82.0, 81.5],
+                      "color": "#3498db"
+                    }
+                  ]
+                },
+                "entropy_distribution_chart": {
+                  "chart_type": "histogram",
+                  "title": "熵值分布对比",
+                  "x_axis": {
+                    "label": "熵值",
+                    "bins": [0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3]
+                  },
+                  "y_axis_label": "样本数量",
+                  "series": [
+                    {
+                      "name": "干净样本熵分布",
+                      "data": [5, 25, 85, 120, 65, 15, 5],
+                      "color": "#3498db"
+                    },
+                    {
+                      "name": "后门样本熵分布",
+                      "data": [45, 30, 10, 5, 0, 0, 0],
+                      "color": "#e74c3c"
+                    }
+                  ]
+                },
+                "detection_metrics_table": {
+                  "headers": ["检测指标", "数值", "评级", "改进空间"],
+                  "rows": [
+                    {
+                      "metric": "检测准确率",
+                      "value": "92.4%",
+                      "rating": "优秀",
+                      "improvement": "+2.4%"
+                    },
+                    {
+                      "metric": "误报率",
+                      "value": "3.8%",
+                      "rating": "良好",
+                      "improvement": "-1.2%"
+                    },
+                    {
+                      "metric": "召回率",
+                      "value": "92.0%",
+                      "rating": "优秀",
+                      "improvement": "+2.0%"
+                    },
+                    {
+                      "metric": "精确率",
+                      "value": "92.4%",
+                      "rating": "优秀",
+                      "improvement": "+2.4%"
+                    }
+                  ]
+                },
+                "attack_type_detection_chart": {
+                  "chart_type": "bar",
+                  "title": "各攻击类型检测效果",
+                  "x_axis": {
+                    "categories": ["BadNets", "Trojan", "Feature Collision", "Triggerless", "Dynamic", "Physical"],
+                    "label": "攻击类型"
+                  },
+                  "y_axis": {
+                    "min": 0,
+                    "max": 100,
+                    "label": "检测率 (%)"
+                  },
+                  "series": [
+                    {
+                      "name": "STRIP检测率",
+                      "data": [95.2, 88.7, 84.3, 79.6, 91.8, 87.2],
+                      "color": "#2ecc71"
+                    },
+                    {
+                      "name": "基准检测率",
+                      "data": [82.5, 75.3, 70.8, 65.4, 78.9, 73.6],
+                      "color": "#3498db"
+                    }
+                  ]
+                },
+                "real_time_performance_chart": {
+                  "chart_type": "line",
+                  "title": "实时检测性能",
+                  "x_axis": {
+                    "categories": ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+                    "label": "时间窗口 (秒)"
+                  },
+                  "y_axis": {
+                    "min": 85,
+                    "max": 100,
+                    "label": "检测准确率 (%)"
+                  },
+                  "series": [
+                    {
+                      "name": "STRIP准确率",
+                      "data": [92.1, 93.4, 91.8, 94.2, 92.7, 93.9, 92.3, 94.1, 91.9, 93.6],
+                      "color": "#2ecc71",
+                      "smooth": true
+                    },
+                    {
+                      "name": "检测延迟(ms)",
+                      "data": [18.2, 17.8, 19.1, 16.9, 18.5, 17.3, 18.9, 16.7, 19.2, 17.6],
+                      "color": "#e74c3c",
+                      "y_axis": "secondary"
+                    }
+                  ]
+                },
+                "performance_summary": {
+                  "overall_detection_accuracy": "92.4%",
+                  "average_detection_latency": "18.2ms",
+                  "false_positive_rate": "3.8%",
+                  "real_time_capability": "优秀",
+                  "computational_efficiency": "高",
+                  "recommendation": "STRIP方法在实时后门检测方面表现出色，具有高检测准确率和低误报率，适用于生产环境部署"
+                }
+              }
+            }
+          },
+          "delay": 0
+        }
+      ],
+      "total_duration": 10,
+      "task_status": "completed"
+    }
+  },
+  "metadata": {
+    "generated_time": "2024/07/01-17:00:00:000",
+    "version": "1.0",
+    "description": "后门防御SSE打桩数据 - STRIP强扰动检测方法",
+    "defense_config": {
+      "defense_methods": ["STRIP"],
+      "defense_mode": "inference_detection",
+      "total_samples": 500,
+      "evaluation_criteria": ["detection_accuracy", "false_positive_rate", "real_time_performance", "computational_efficiency"]
+    }
+  }
+}

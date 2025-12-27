@@ -26,6 +26,10 @@ runs/
 vehicle/input/datasets/
 vehicle/input/weights/
 
+input/data
+input/images
+input/model
+
 # 其他常见大文件扩展
 *.tar
 *.tar.gz

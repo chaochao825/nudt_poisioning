@@ -1,0 +1,283 @@
+{
+  "events": [
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "process_start",
+        "callback_params": {
+          "task_run_id": "labelflip-c370068d",
+          "method_type": "数据投毒",
+          "algorithm_type": "LabelFlip",
+          "task_type": "投毒执行",
+          "task_name": "LabelFlip数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 5,
+        "message": "投毒流程初始化",
+        "details": {
+          "dataset": "CIFAR-10",
+          "poison_ratio": 0.1,
+          "trigger_type": "label_noise",
+          "category": "基础模拟"
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:36:971"
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "dataset_loaded",
+        "callback_params": {
+          "task_run_id": "labelflip-c370068d",
+          "method_type": "数据投毒",
+          "algorithm_type": "LabelFlip",
+          "task_type": "投毒执行",
+          "task_name": "LabelFlip数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 15,
+        "message": "数据集加载完成",
+        "details": {
+          "train_samples": 2048,
+          "validation_samples": 256
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:37:472"
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "poison_generation_start",
+        "callback_params": {
+          "task_run_id": "labelflip-c370068d",
+          "method_type": "数据投毒",
+          "algorithm_type": "LabelFlip",
+          "task_type": "投毒执行",
+          "task_name": "LabelFlip数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 30,
+        "message": "开始构造投毒样本",
+        "details": {
+          "target_label": 3,
+          "samples_to_poison": 204
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:37:973"
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "poison_generation_progress",
+        "callback_params": {
+          "task_run_id": "labelflip-c370068d",
+          "method_type": "数据投毒",
+          "algorithm_type": "LabelFlip",
+          "task_type": "投毒执行",
+          "task_name": "LabelFlip数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 40,
+        "message": "投毒样本生成中",
+        "details": {
+          "completed": 122,
+          "stealth_score": 0.82
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:38:473"
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "poison_generation_completed",
+        "callback_params": {
+          "task_run_id": "labelflip-c370068d",
+          "method_type": "数据投毒",
+          "algorithm_type": "LabelFlip",
+          "task_type": "投毒执行",
+          "task_name": "LabelFlip数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 50,
+        "message": "投毒样本准备就绪",
+        "details": {
+          "poisoned_samples": 204,
+          "storage_path": "poison/labelflip_patches.bin"
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:38:974"
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "training_epoch",
+        "callback_params": {
+          "task_run_id": "labelflip-c370068d",
+          "method_type": "数据投毒",
+          "algorithm_type": "LabelFlip",
+          "task_type": "投毒执行",
+          "task_name": "LabelFlip数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 60,
+        "message": "训练轮次2完成",
+        "details": {
+          "epoch": 2,
+          "loss": 0.85,
+          "accuracy": 0.87
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:39:475"
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "training_epoch",
+        "callback_params": {
+          "task_run_id": "labelflip-c370068d",
+          "method_type": "数据投毒",
+          "algorithm_type": "LabelFlip",
+          "task_type": "投毒执行",
+          "task_name": "LabelFlip数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 70,
+        "message": "训练轮次4完成",
+        "details": {
+          "epoch": 4,
+          "loss": 0.75,
+          "accuracy": 0.88
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:39:975"
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "training_epoch",
+        "callback_params": {
+          "task_run_id": "labelflip-c370068d",
+          "method_type": "数据投毒",
+          "algorithm_type": "LabelFlip",
+          "task_type": "投毒执行",
+          "task_name": "LabelFlip数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 78,
+        "message": "训练轮次6完成",
+        "details": {
+          "epoch": 6,
+          "loss": 0.65,
+          "accuracy": 0.89
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:40:476"
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "evaluation_clean",
+        "callback_params": {
+          "task_run_id": "labelflip-c370068d",
+          "method_type": "数据投毒",
+          "algorithm_type": "LabelFlip",
+          "task_type": "投毒执行",
+          "task_name": "LabelFlip数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 85,
+        "message": "干净样本评估",
+        "details": {
+          "clean_accuracy": 0.9,
+          "accuracy_drop": 0.02
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:40:977"
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "evaluation_backdoor",
+        "callback_params": {
+          "task_run_id": "labelflip-c370068d",
+          "method_type": "数据投毒",
+          "algorithm_type": "LabelFlip",
+          "task_type": "投毒执行",
+          "task_name": "LabelFlip数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 92,
+        "message": "后门触发评估",
+        "details": {
+          "backdoor_success_rate": 0.45,
+          "trigger_samples": 64
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:41:478"
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "result_finalized",
+        "callback_params": {
+          "task_run_id": "labelflip-c370068d",
+          "method_type": "数据投毒",
+          "algorithm_type": "LabelFlip",
+          "task_type": "投毒执行",
+          "task_name": "LabelFlip数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 100,
+        "message": "输出训练摘要",
+        "details": {
+          "clean_accuracy": 0.9,
+          "poisoned_accuracy": 0.88,
+          "backdoor_success_rate": 0.45,
+          "notes": "占位结果，便于调试",
+          "is_final": true,
+          "completion_timestamp": "2025-12-27T02:17:41.979024"
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:41:978"
+    }
+  ],
+  "summary": {
+    "final_event": {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "result_finalized",
+        "callback_params": {
+          "task_run_id": "labelflip-c370068d",
+          "method_type": "数据投毒",
+          "algorithm_type": "LabelFlip",
+          "task_type": "投毒执行",
+          "task_name": "LabelFlip数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 100,
+        "message": "输出训练摘要",
+        "details": {
+          "clean_accuracy": 0.9,
+          "poisoned_accuracy": 0.88,
+          "backdoor_success_rate": 0.45,
+          "notes": "占位结果，便于调试",
+          "is_final": true,
+          "completion_timestamp": "2025-12-27T02:17:41.979024"
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:41:978"
+    }
+  }
+}

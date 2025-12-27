@@ -1,0 +1,283 @@
+{
+  "events": [
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "process_start",
+        "callback_params": {
+          "task_run_id": "randomnoise-edc083fd",
+          "method_type": "数据投毒",
+          "algorithm_type": "RandomNoise",
+          "task_type": "投毒执行",
+          "task_name": "RandomNoise数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 5,
+        "message": "投毒流程初始化",
+        "details": {
+          "dataset": "TinyImageNet",
+          "poison_ratio": 0.08,
+          "trigger_type": "pixel_noise",
+          "category": "基础模拟"
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:54:220"
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "dataset_loaded",
+        "callback_params": {
+          "task_run_id": "randomnoise-edc083fd",
+          "method_type": "数据投毒",
+          "algorithm_type": "RandomNoise",
+          "task_type": "投毒执行",
+          "task_name": "RandomNoise数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 15,
+        "message": "数据集加载完成",
+        "details": {
+          "train_samples": 2048,
+          "validation_samples": 256
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:54:720"
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "poison_generation_start",
+        "callback_params": {
+          "task_run_id": "randomnoise-edc083fd",
+          "method_type": "数据投毒",
+          "algorithm_type": "RandomNoise",
+          "task_type": "投毒执行",
+          "task_name": "RandomNoise数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 30,
+        "message": "开始构造投毒样本",
+        "details": {
+          "target_label": 5,
+          "samples_to_poison": 163
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:55:221"
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "poison_generation_progress",
+        "callback_params": {
+          "task_run_id": "randomnoise-edc083fd",
+          "method_type": "数据投毒",
+          "algorithm_type": "RandomNoise",
+          "task_type": "投毒执行",
+          "task_name": "RandomNoise数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 40,
+        "message": "投毒样本生成中",
+        "details": {
+          "completed": 98,
+          "stealth_score": 0.82
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:55:722"
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "poison_generation_completed",
+        "callback_params": {
+          "task_run_id": "randomnoise-edc083fd",
+          "method_type": "数据投毒",
+          "algorithm_type": "RandomNoise",
+          "task_type": "投毒执行",
+          "task_name": "RandomNoise数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 50,
+        "message": "投毒样本准备就绪",
+        "details": {
+          "poisoned_samples": 163,
+          "storage_path": "poison/randomnoise_patches.bin"
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:56:223"
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "training_epoch",
+        "callback_params": {
+          "task_run_id": "randomnoise-edc083fd",
+          "method_type": "数据投毒",
+          "algorithm_type": "RandomNoise",
+          "task_type": "投毒执行",
+          "task_name": "RandomNoise数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 60,
+        "message": "训练轮次2完成",
+        "details": {
+          "epoch": 2,
+          "loss": 0.85,
+          "accuracy": 0.79
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:56:723"
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "training_epoch",
+        "callback_params": {
+          "task_run_id": "randomnoise-edc083fd",
+          "method_type": "数据投毒",
+          "algorithm_type": "RandomNoise",
+          "task_type": "投毒执行",
+          "task_name": "RandomNoise数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 70,
+        "message": "训练轮次4完成",
+        "details": {
+          "epoch": 4,
+          "loss": 0.75,
+          "accuracy": 0.8
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:57:224"
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "training_epoch",
+        "callback_params": {
+          "task_run_id": "randomnoise-edc083fd",
+          "method_type": "数据投毒",
+          "algorithm_type": "RandomNoise",
+          "task_type": "投毒执行",
+          "task_name": "RandomNoise数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 78,
+        "message": "训练轮次6完成",
+        "details": {
+          "epoch": 6,
+          "loss": 0.65,
+          "accuracy": 0.81
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:57:725"
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "evaluation_clean",
+        "callback_params": {
+          "task_run_id": "randomnoise-edc083fd",
+          "method_type": "数据投毒",
+          "algorithm_type": "RandomNoise",
+          "task_type": "投毒执行",
+          "task_name": "RandomNoise数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 85,
+        "message": "干净样本评估",
+        "details": {
+          "clean_accuracy": 0.82,
+          "accuracy_drop": 0.02
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:58:226"
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "evaluation_backdoor",
+        "callback_params": {
+          "task_run_id": "randomnoise-edc083fd",
+          "method_type": "数据投毒",
+          "algorithm_type": "RandomNoise",
+          "task_type": "投毒执行",
+          "task_name": "RandomNoise数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 92,
+        "message": "后门触发评估",
+        "details": {
+          "backdoor_success_rate": 0.4,
+          "trigger_samples": 64
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:58:726"
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "result_finalized",
+        "callback_params": {
+          "task_run_id": "randomnoise-edc083fd",
+          "method_type": "数据投毒",
+          "algorithm_type": "RandomNoise",
+          "task_type": "投毒执行",
+          "task_name": "RandomNoise数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 100,
+        "message": "输出训练摘要",
+        "details": {
+          "clean_accuracy": 0.82,
+          "poisoned_accuracy": 0.8,
+          "backdoor_success_rate": 0.4,
+          "notes": "占位结果，便于调试",
+          "is_final": true,
+          "completion_timestamp": "2025-12-27T02:17:59.227765"
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:59:227"
+    }
+  ],
+  "summary": {
+    "final_event": {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "data": {
+        "event": "result_finalized",
+        "callback_params": {
+          "task_run_id": "randomnoise-edc083fd",
+          "method_type": "数据投毒",
+          "algorithm_type": "RandomNoise",
+          "task_type": "投毒执行",
+          "task_name": "RandomNoise数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 100,
+        "message": "输出训练摘要",
+        "details": {
+          "clean_accuracy": 0.82,
+          "poisoned_accuracy": 0.8,
+          "backdoor_success_rate": 0.4,
+          "notes": "占位结果，便于调试",
+          "is_final": true,
+          "completion_timestamp": "2025-12-27T02:17:59.227765"
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:59:227"
+    }
+  }
+}

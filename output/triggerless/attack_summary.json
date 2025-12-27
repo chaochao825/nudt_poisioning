@@ -1,0 +1,362 @@
+{
+  "events": [
+    {
+      "resp_code": 0,
+      "resp_msg": "操作成功",
+      "time_stamp": "2025/12/26-11:21:09:108",
+      "data": {
+        "event": "model_dir_ready",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": null,
+        "message": "Path is ready.",
+        "log": "[info] path ready: ./input/model",
+        "details": {
+          "file_name": "./input/model"
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:108",
+      "data": {
+        "event": "model_loaded",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 10,
+        "message": "目标模型加载成功",
+        "log": null,
+        "details": {
+          "model_name": "resnet50_stream",
+          "model_path": "./input/model/resnet50.pth",
+          "model_type": "classification",
+          "input_shape": [
+            3,
+            224,
+            224
+          ],
+          "num_classes": 1000,
+          "training_session_id": "poison_session_triggerless_1766748069"
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:108",
+      "data": {
+        "event": "process_start",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 5,
+        "message": "投毒流程初始化",
+        "log": null,
+        "details": {
+          "dataset": "CIFAR-10",
+          "poison_ratio": 0.05,
+          "target_label": 2,
+          "category": "实战",
+          "attack_name": "Triggerless",
+          "training_session_id": "poison_session_triggerless_1766748069"
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:108",
+      "data": {
+        "event": "dataset_loaded",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 15,
+        "message": "数据集加载完成",
+        "log": null,
+        "details": {
+          "train_samples": 2048,
+          "validation_samples": 256
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:108",
+      "data": {
+        "event": "poison_generation_start",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 30,
+        "message": "开始构造投毒样本",
+        "log": null,
+        "details": {
+          "target_label": 2,
+          "samples_to_poison": 102
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:108",
+      "data": {
+        "event": "poison_generation_progress",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 40,
+        "message": "投毒样本生成中",
+        "log": null,
+        "details": {
+          "completed": 61,
+          "stealth_score": 0.82
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:108",
+      "data": {
+        "event": "poison_generation_completed",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 50,
+        "message": "投毒样本准备就绪",
+        "log": null,
+        "details": {
+          "poisoned_samples": 102,
+          "storage_path": "poison/triggerless_patches.bin"
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:109",
+      "data": {
+        "event": "training_epoch",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 60,
+        "message": "训练轮次2完成",
+        "log": null,
+        "details": {
+          "epoch": 2,
+          "loss": 0.85,
+          "accuracy": 0.8
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:109",
+      "data": {
+        "event": "training_epoch",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 70,
+        "message": "训练轮次4完成",
+        "log": null,
+        "details": {
+          "epoch": 4,
+          "loss": 0.75,
+          "accuracy": 0.82
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:109",
+      "data": {
+        "event": "training_epoch",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 78,
+        "message": "训练轮次6完成",
+        "log": null,
+        "details": {
+          "epoch": 6,
+          "loss": 0.65,
+          "accuracy": 0.84
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:109",
+      "data": {
+        "event": "evaluation_clean",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 85,
+        "message": "干净样本评估",
+        "log": null,
+        "details": {
+          "clean_accuracy": 0.86,
+          "accuracy_drop": 0.02
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:109",
+      "data": {
+        "event": "evaluation_backdoor",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 92,
+        "message": "后门触发评估",
+        "log": null,
+        "details": {
+          "backdoor_success_rate": 0.68,
+          "trigger_samples": 64
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:109",
+      "data": {
+        "event": "final_result",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 100,
+        "message": "输出训练摘要",
+        "log": null,
+        "details": {
+          "training_session_id": "poison_session_triggerless_1766748069",
+          "clean_accuracy": 0.86,
+          "poisoned_accuracy": 0.84,
+          "backdoor_success_rate": 0.68,
+          "notes": "占位结果，便于调试"
+        }
+      }
+    }
+  ],
+  "summary": {
+    "final_event": {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:109",
+      "data": {
+        "event": "final_result",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 100,
+        "message": "输出训练摘要",
+        "log": null,
+        "details": {
+          "training_session_id": "poison_session_triggerless_1766748069",
+          "clean_accuracy": 0.86,
+          "poisoned_accuracy": 0.84,
+          "backdoor_success_rate": 0.68,
+          "notes": "占位结果，便于调试"
+        }
+      }
+    }
+  }
+}

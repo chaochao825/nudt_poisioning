@@ -1,0 +1,54 @@
+{
+  "events": [
+    {
+      "resp_code": 1,
+      "resp_msg": "unsupported",
+      "data": {
+        "event": "not_supported",
+        "callback_params": {
+          "task_run_id": "neuroninterference-39c60be4",
+          "method_type": "数据投毒",
+          "algorithm_type": "NeuronInterference",
+          "task_type": "投毒执行",
+          "task_name": "NeuronInterference数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 0,
+        "message": "该算法暂未接入",
+        "details": {
+          "reason": "Pipeline 未完成",
+          "suggestion": "等待后续版本",
+          "is_final": true,
+          "completion_timestamp": "2025-12-27T02:17:48.092463"
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:48:092"
+    }
+  ],
+  "summary": {
+    "final_event": {
+      "resp_code": 1,
+      "resp_msg": "unsupported",
+      "data": {
+        "event": "not_supported",
+        "callback_params": {
+          "task_run_id": "neuroninterference-39c60be4",
+          "method_type": "数据投毒",
+          "algorithm_type": "NeuronInterference",
+          "task_type": "投毒执行",
+          "task_name": "NeuronInterference数据投毒",
+          "user_name": "auto_builder"
+        },
+        "progress": 0,
+        "message": "该算法暂未接入",
+        "details": {
+          "reason": "Pipeline 未完成",
+          "suggestion": "等待后续版本",
+          "is_final": true,
+          "completion_timestamp": "2025-12-27T02:17:48.092463"
+        }
+      },
+      "time_stamp": "2025/12/27-02:17:48:092"
+    }
+  }
+}

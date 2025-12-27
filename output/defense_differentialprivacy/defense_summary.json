@@ -1,0 +1,1316 @@
+{
+  "events": [
+    {
+      "resp_code": 0,
+      "resp_msg": "操作成功",
+      "time_stamp": "2025/12/27-02:18:32:149",
+      "data": {
+        "event": "dp_training_start",
+        "callback_params": {
+          "task_run_id": "5g5707h3-6i12-34g6-0a3f-3630j37f6634",
+          "method_type": "隐私保护防御",
+          "algorithm_type": "DifferentialPrivacy",
+          "task_type": "防御执行",
+          "task_name": "差分隐私投毒防御",
+          "parent_task_id": "h87g05d13g719k4eef38040k9773d66hj",
+          "user_name": "zhangxueyou"
+        },
+        "progress": 5,
+        "message": "开始差分隐私训练防御任务",
+        "log": "[5%] 开始差分隐私训练防御任务初始化\n",
+        "details": {
+          "defense_method": "DifferentialPrivacy",
+          "defense_mode": "training_protection",
+          "target_model": "resnet50_v1",
+          "dataset": "CIFAR-10",
+          "privacy_guarantee": "(8.0, 1e-5)-DP",
+          "training_statistics": {
+            "processed_samples": 0,
+            "training_iterations": 0,
+            "privacy_budget_used": 0.0,
+            "average_processing_time": 0.0
+          }
+        }
+      },
+      "delay": 1
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "操作成功",
+      "time_stamp": "2025/12/27-02:18:32:650",
+      "data": {
+        "event": "model_loaded",
+        "callback_params": {
+          "task_run_id": "5g5707h3-6i12-34g6-0a3f-3630j37f6634",
+          "method_type": "隐私保护防御",
+          "algorithm_type": "DifferentialPrivacy",
+          "task_type": "防御执行",
+          "task_name": "差分隐私投毒防御",
+          "parent_task_id": "h87g05d13g719k4eef38040k9773d66hj",
+          "user_name": "zhangxueyou"
+        },
+        "progress": 15,
+        "message": "模型架构加载成功",
+        "log": "[15%] ResNet-50模型架构加载完成，准备差分隐私训练\n",
+        "details": {
+          "defense_method": "DifferentialPrivacy",
+          "model_info": {
+            "model_name": "ResNet-50",
+            "model_architecture": "resnet50",
+            "input_shape": [
+              3,
+              32,
+              32
+            ],
+            "num_classes": 10,
+            "model_parameters": 23528522,
+            "model_type": "classification"
+          },
+          "training_statistics": {
+            "processed_samples": 0,
+            "training_iterations": 0,
+            "privacy_budget_used": 0.0,
+            "average_processing_time": 0.0
+          }
+        }
+      },
+      "delay": 1
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "操作成功",
+      "time_stamp": "2025/12/27-02:18:33:151",
+      "data": {
+        "event": "dp_engine_initialized",
+        "callback_params": {
+          "task_run_id": "5g5707h3-6i12-34g6-0a3f-3630j37f6634",
+          "method_type": "隐私保护防御",
+          "algorithm_type": "DifferentialPrivacy",
+          "task_type": "防御执行",
+          "task_name": "差分隐私投毒防御",
+          "parent_task_id": "h87g05d13g719k4eef38040k9773d66hj",
+          "user_name": "zhangxueyou"
+        },
+        "progress": 25,
+        "message": "差分隐私引擎初始化完成",
+        "log": "[25%] Opacus差分隐私引擎初始化完成 - 噪声乘数: 1.1, 最大梯度范数: 1.0\n",
+        "details": {
+          "defense_method": "DifferentialPrivacy",
+          "privacy_engine_config": {
+            "privacy_engine": "Opacus",
+            "noise_multiplier": 1.1,
+            "max_grad_norm": 1.0,
+            "target_epsilon": 8.0,
+            "target_delta": 1e-05,
+            "sampling_rate": 0.01,
+            "accountant": "RDP",
+            "secure_rng": true
+          },
+          "training_statistics": {
+            "processed_samples": 0,
+            "training_iterations": 0,
+            "privacy_budget_used": 0.0,
+            "average_processing_time": 0.0
+          }
+        }
+      },
+      "delay": 2
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "操作成功",
+      "time_stamp": "2025/12/27-02:18:33:651",
+      "data": {
+        "event": "dataset_loaded",
+        "callback_params": {
+          "task_run_id": "5g5707h3-6i12-34g6-0a3f-3630j37f6634",
+          "method_type": "隐私保护防御",
+          "algorithm_type": "DifferentialPrivacy",
+          "task_type": "防御执行",
+          "task_name": "差分隐私投毒防御",
+          "parent_task_id": "h87g05d13g719k4eef38040k9773d66hj",
+          "user_name": "zhangxueyou"
+        },
+        "progress": 30,
+        "message": "训练数据集加载完成",
+        "log": "[30%] CIFAR-10数据集加载完成 - 50000个训练样本，10000个测试样本\n",
+        "details": {
+          "defense_method": "DifferentialPrivacy",
+          "dataset_config": {
+            "dataset_name": "CIFAR-10",
+            "dataset_path": "/datasets/cifar10/processed",
+            "training_samples": 50000,
+            "test_samples": 10000,
+            "batch_size": 256,
+            "poisoned_samples": 500,
+            "poison_rate": 0.01,
+            "class_distribution": {
+              "airplane": 0.1,
+              "automobile": 0.1,
+              "bird": 0.1,
+              "cat": 0.1,
+              "deer": 0.1,
+              "dog": 0.1,
+              "frog": 0.1,
+              "horse": 0.1,
+              "ship": 0.1,
+              "truck": 0.1
+            }
+          },
+          "training_statistics": {
+            "processed_samples": 0,
+            "training_iterations": 0,
+            "privacy_budget_used": 0.0,
+            "average_processing_time": 0.0
+          }
+        }
+      },
+      "delay": 2
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "操作成功",
+      "time_stamp": "2025/12/27-02:18:34:152",
+      "data": {
+        "event": "dp_training_epoch_start",
+        "callback_params": {
+          "task_run_id": "5g5707h3-6i12-34g6-0a3f-3630j37f6634",
+          "method_type": "隐私保护防御",
+          "algorithm_type": "DifferentialPrivacy",
+          "task_type": "防御执行",
+          "task_name": "差分隐私投毒防御",
+          "parent_task_id": "h87g05d13g719k4eef38040k9773d66hj",
+          "user_name": "zhangxueyou"
+        },
+        "progress": 35,
+        "message": "开始差分隐私训练",
+        "log": "[35%] 开始差分隐私训练 - 总轮次: 50, 批量大小: 256\n",
+        "details": {
+          "defense_method": "DifferentialPrivacy",
+          "training_config": {
+            "total_epochs": 50,
+            "batch_size": 256,
+            "learning_rate": 0.1,
+            "momentum": 0.9,
+            "weight_decay": 0.0005,
+            "gradient_clipping": true,
+            "noise_injection": true,
+            "privacy_accounting": "RDP"
+          },
+          "training_statistics": {
+            "processed_samples": 0,
+            "training_iterations": 0,
+            "privacy_budget_used": 0.0,
+            "average_processing_time": 0.0
+          }
+        }
+      },
+      "delay": 3
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "操作成功",
+      "time_stamp": "2025/12/27-02:18:34:653",
+      "data": {
+        "event": "dp_training_epoch_progress",
+        "callback_params": {
+          "task_run_id": "5g5707h3-6i12-34g6-0a3f-3630j37f6634",
+          "method_type": "隐私保护防御",
+          "algorithm_type": "DifferentialPrivacy",
+          "task_type": "防御执行",
+          "task_name": "差分隐私投毒防御",
+          "parent_task_id": "h87g05d13g719k4eef38040k9773d66hj",
+          "user_name": "zhangxueyou"
+        },
+        "progress": 45,
+        "message": "差分隐私训练进行中",
+        "log": "[45%] 训练第10轮完成 - 当前准确率: 68.5%, 隐私预算消耗: 1.6\n",
+        "details": {
+          "defense_method": "DifferentialPrivacy",
+          "training_progress": {
+            "current_epoch": 10,
+            "total_epochs": 50,
+            "training_accuracy": 0.685,
+            "test_accuracy": 0.672,
+            "loss_value": 1.234,
+            "privacy_budget_used": 1.6,
+            "noise_scale": 1.1,
+            "gradient_norm": 0.89
+          },
+          "training_statistics": {
+            "processed_samples": 500000,
+            "training_iterations": 195,
+            "privacy_budget_used": 1.6,
+            "average_processing_time": 0.85
+          }
+        }
+      },
+      "delay": 3
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "操作成功",
+      "time_stamp": "2025/12/27-02:18:35:154",
+      "data": {
+        "event": "dp_training_epoch_update",
+        "callback_params": {
+          "task_run_id": "5g5707h3-6i12-34g6-0a3f-3630j37f6634",
+          "method_type": "隐私保护防御",
+          "algorithm_type": "DifferentialPrivacy",
+          "task_type": "防御执行",
+          "task_name": "差分隐私投毒防御",
+          "parent_task_id": "h87g05d13g719k4eef38040k9773d66hj",
+          "user_name": "zhangxueyou"
+        },
+        "progress": 55,
+        "message": "训练进度更新",
+        "log": "[55%] 训练第25轮完成 - 当前准确率: 78.2%, 隐私预算消耗: 4.0\n",
+        "details": {
+          "defense_method": "DifferentialPrivacy",
+          "training_progress": {
+            "current_epoch": 25,
+            "total_epochs": 50,
+            "training_accuracy": 0.782,
+            "test_accuracy": 0.768,
+            "loss_value": 0.876,
+            "privacy_budget_used": 4.0,
+            "noise_scale": 1.1,
+            "gradient_norm": 0.92
+          },
+          "training_statistics": {
+            "processed_samples": 1250000,
+            "training_iterations": 488,
+            "privacy_budget_used": 4.0,
+            "average_processing_time": 0.82
+          }
+        }
+      },
+      "delay": 3
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "操作成功",
+      "time_stamp": "2025/12/27-02:18:35:655",
+      "data": {
+        "event": "dp_training_completed",
+        "callback_params": {
+          "task_run_id": "5g5707h3-6i12-34g6-0a3f-3630j37f6634",
+          "method_type": "隐私保护防御",
+          "algorithm_type": "DifferentialPrivacy",
+          "task_type": "防御执行",
+          "task_name": "差分隐私投毒防御",
+          "parent_task_id": "h87g05d13g719k4eef38040k9773d66hj",
+          "user_name": "zhangxueyou"
+        },
+        "progress": 65,
+        "message": "差分隐私训练完成",
+        "log": "[65%] 差分隐私训练完成 - 最终准确率: 85.3%, 最终隐私预算: 8.0\n",
+        "details": {
+          "defense_method": "DifferentialPrivacy",
+          "training_summary": {
+            "total_epochs": 50,
+            "final_training_accuracy": 0.853,
+            "final_test_accuracy": 0.841,
+            "final_loss": 0.543,
+            "final_privacy_budget": 8.0,
+            "privacy_guarantee": "(8.0, 1e-5)-DP",
+            "training_time": "2700.5秒"
+          },
+          "training_statistics": {
+            "processed_samples": 2500000,
+            "training_iterations": 976,
+            "privacy_budget_used": 8.0,
+            "average_processing_time": 0.81
+          }
+        }
+      },
+      "delay": 2
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "操作成功",
+      "time_stamp": "2025/12/27-02:18:36:155",
+      "data": {
+        "event": "backdoor_resistance_evaluation",
+        "callback_params": {
+          "task_run_id": "5g5707h3-6i12-34g6-0a3f-3630j37f6634",
+          "method_type": "隐私保护防御",
+          "algorithm_type": "DifferentialPrivacy",
+          "task_type": "防御执行",
+          "task_name": "差分隐私投毒防御",
+          "parent_task_id": "h87g05d13g719k4eef38040k9773d66hj",
+          "user_name": "zhangxueyou"
+        },
+        "progress": 75,
+        "message": "开始后门抵抗性评估",
+        "log": "[75%] 开始评估差分隐私模型对投毒攻击的抵抗性\n",
+        "details": {
+          "defense_method": "DifferentialPrivacy",
+          "evaluation_phase": "backdoor_resistance",
+          "test_samples": 1000,
+          "trigger_samples": 50,
+          "evaluation_metrics": [
+            "clean_accuracy",
+            "backdoor_success_rate",
+            "privacy_utility_tradeoff"
+          ],
+          "training_statistics": {
+            "processed_samples": 2500000,
+            "training_iterations": 976,
+            "privacy_budget_used": 8.0,
+            "average_processing_time": 0.81
+          }
+        }
+      },
+      "delay": 3
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "操作成功",
+      "time_stamp": "2025/12/27-02:18:36:656",
+      "data": {
+        "event": "backdoor_evaluation_completed",
+        "callback_params": {
+          "task_run_id": "5g5707h3-6i12-34g6-0a3f-3630j37f6634",
+          "method_type": "隐私保护防御",
+          "algorithm_type": "DifferentialPrivacy",
+          "task_type": "防御执行",
+          "task_name": "差分隐私投毒防御",
+          "parent_task_id": "h87g05d13g719k4eef38040k9773d66hj",
+          "user_name": "zhangxueyou"
+        },
+        "progress": 85,
+        "message": "后门抵抗性评估完成",
+        "log": "[85%] 后门抵抗性评估完成 - 投毒成功率: 8.7%\n",
+        "details": {
+          "defense_method": "DifferentialPrivacy",
+          "backdoor_resistance_metrics": {
+            "clean_accuracy": 0.841,
+            "backdoor_success_rate": 0.087,
+            "attack_success_reduction": 0.789,
+            "utility_drop": 0.084,
+            "privacy_utility_tradeoff": 0.845,
+            "samples_evaluated": 1000
+          },
+          "attack_type_performance": {
+            "BadNets": {
+              "success_rate": 0.092,
+              "defense_effectiveness": 0.908
+            },
+            "Trojan": {
+              "success_rate": 0.078,
+              "defense_effectiveness": 0.922
+            },
+            "Feature_Collision": {
+              "success_rate": 0.085,
+              "defense_effectiveness": 0.915
+            }
+          },
+          "training_statistics": {
+            "processed_samples": 2500000,
+            "training_iterations": 976,
+            "privacy_budget_used": 8.0,
+            "average_processing_time": 0.81
+          }
+        }
+      },
+      "delay": 2
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "操作成功",
+      "time_stamp": "2025/12/27-02:18:37:157",
+      "data": {
+        "event": "privacy_utility_analysis",
+        "callback_params": {
+          "task_run_id": "5g5707h3-6i12-34g6-0a3f-3630j37f6634",
+          "method_type": "隐私保护防御",
+          "algorithm_type": "DifferentialPrivacy",
+          "task_type": "防御执行",
+          "task_name": "差分隐私投毒防御",
+          "parent_task_id": "h87g05d13g719k4eef38040k9773d66hj",
+          "user_name": "zhangxueyou"
+        },
+        "progress": 92,
+        "message": "隐私-效用权衡分析完成",
+        "log": "[92%] 隐私-效用权衡分析完成 - 权衡得分: 84.5%\n",
+        "details": {
+          "defense_method": "DifferentialPrivacy",
+          "privacy_utility_analysis": {
+            "privacy_guarantee": "(8.0, 1e-5)-DP",
+            "utility_preservation": 0.841,
+            "privacy_utility_score": 0.845,
+            "noise_impact": 0.084,
+            "gradient_clipping_impact": 0.056,
+            "optimal_tradeoff": true
+          },
+          "training_statistics": {
+            "processed_samples": 2500000,
+            "training_iterations": 976,
+            "privacy_budget_used": 8.0,
+            "average_processing_time": 0.81
+          }
+        }
+      },
+      "delay": 2
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "操作成功",
+      "time_stamp": "2025/12/27-02:18:37:658",
+      "data": {
+        "event": "model_saved",
+        "callback_params": {
+          "task_run_id": "5g5707h3-6i12-34g6-0a3f-3630j37f6634",
+          "method_type": "隐私保护防御",
+          "algorithm_type": "DifferentialPrivacy",
+          "task_type": "防御执行",
+          "task_name": "差分隐私投毒防御",
+          "parent_task_id": "h87g05d13g719k4eef38040k9773d66hj",
+          "user_name": "zhangxueyou"
+        },
+        "progress": 96,
+        "message": "差分隐私模型保存完成",
+        "log": "[96%] 差分隐私模型保存完成\n",
+        "details": {
+          "model_save_path": "/models/differential_privacy/session_123456789/resnet50_dp_epsilon8.0.pth",
+          "privacy_report_path": "/reports/privacy/session_123456789.json",
+          "training_logs_path": "/logs/dp_training/session_123456789.log",
+          "model_size": "189.2MB",
+          "save_time": "15.3秒"
+        }
+      },
+      "delay": 1
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "操作成功",
+      "time_stamp": "2025/12/27-02:18:38:158",
+      "data": {
+        "event": "final_result",
+        "callback_params": {
+          "task_run_id": "5g5707h3-6i12-34g6-0a3f-3630j37f6634",
+          "method_type": "隐私保护防御",
+          "algorithm_type": "DifferentialPrivacy",
+          "task_type": "防御执行",
+          "task_name": "差分隐私投毒防御",
+          "parent_task_id": "h87g05d13g719k4eef38040k9773d66hj",
+          "user_name": "zhangxueyou"
+        },
+        "progress": 100,
+        "message": "差分隐私投毒防御任务完成",
+        "log": "[100%] 差分隐私投毒防御任务完成 - 提供(8.0, 1e-5)-DP保证\n",
+        "details": {
+          "training_session_id": "dp_training_session_123456789",
+          "defense_method": "DifferentialPrivacy",
+          "execution_summary": {
+            "total_training_samples": 2500000,
+            "final_accuracy": 0.841,
+            "backdoor_success_rate": 0.087,
+            "attack_success_reduction": 0.789,
+            "privacy_budget_used": 8.0,
+            "privacy_guarantee": "(8.0, 1e-5)-DP",
+            "utility_preservation": 0.841,
+            "total_training_time": "2700.5秒"
+          },
+          "performance_metrics": {
+            "privacy_protection_level": 0.945,
+            "utility_preservation_score": 0.841,
+            "privacy_utility_tradeoff": 0.845,
+            "backdoor_resistance": 0.789,
+            "computational_overhead": 0.12
+          },
+          "privacy_guarantee_analysis": {
+            "epsilon": 8.0,
+            "delta": 1e-05,
+            "noise_multiplier": 1.1,
+            "max_grad_norm": 1.0,
+            "privacy_accounting": "RDP",
+            "privacy_amplification": true,
+            "privacy_guarantee_strength": "强"
+          },
+          "defense_effectiveness": {
+            "backdoor_detection_rate": 0.913,
+            "clean_sample_preservation": 0.841,
+            "privacy_protection": 0.945,
+            "defense_efficiency": 0.878,
+            "overall_effectiveness": "优秀"
+          },
+          "comparison_analysis": {
+            "before_defense": {
+              "accuracy": 0.925,
+              "backdoor_success_rate": 0.876,
+              "privacy_protection": 0.0
+            },
+            "after_defense": {
+              "accuracy": 0.841,
+              "backdoor_success_rate": 0.087,
+              "privacy_protection": 0.945
+            },
+            "defense_impact": {
+              "accuracy_drop": 0.084,
+              "backdoor_reduction": 0.789,
+              "privacy_improvement": 0.945
+            }
+          },
+          "resource_usage": {
+            "device_type": "gpu-single",
+            "actual_training_time": "2700.5秒",
+            "memory_peak_usage": "4.8GB",
+            "storage_used": "220MB",
+            "cpu_utilization": "65%",
+            "gpu_utilization": "88%",
+            "computation_efficiency": "良好"
+          },
+          "output_artifacts": {
+            "dp_model": "/models/differential_privacy/session_123456789/resnet50_dp_epsilon8.0.pth",
+            "privacy_report": "/reports/privacy/session_123456789.json",
+            "training_logs": "/logs/dp_training/session_123456789.log",
+            "evaluation_results": "/results/dp_evaluation/session_123456789/",
+            "visualizations": "/visualizations/differential_privacy/session_123456789/"
+          },
+          "privacy_configuration_recommendation": {
+            "optimal_epsilon": 8.0,
+            "optimal_delta": 1e-05,
+            "noise_multiplier": 1.1,
+            "max_grad_norm": 1.0,
+            "batch_size": 256,
+            "learning_rate": 0.1,
+            "training_epochs": 50
+          },
+          "evaluation_ui_data": {
+            "privacy_utility_tradeoff_chart": {
+              "chart_type": "scatter",
+              "title": "隐私-效用权衡分析",
+              "x_axis": {
+                "label": "隐私保护强度 (ε)",
+                "min": 1,
+                "max": 20
+              },
+              "y_axis": {
+                "label": "模型准确率 (%)",
+                "min": 70,
+                "max": 95
+              },
+              "series": [
+                {
+                  "name": "隐私-效用权衡曲线",
+                  "data": [
+                    {
+                      "epsilon": 1.0,
+                      "accuracy": 72.3
+                    },
+                    {
+                      "epsilon": 2.0,
+                      "accuracy": 76.8
+                    },
+                    {
+                      "epsilon": 4.0,
+                      "accuracy": 80.5
+                    },
+                    {
+                      "epsilon": 8.0,
+                      "accuracy": 84.1
+                    },
+                    {
+                      "epsilon": 16.0,
+                      "accuracy": 87.2
+                    },
+                    {
+                      "epsilon": 20.0,
+                      "accuracy": 88.5
+                    }
+                  ],
+                  "color": "#3498db",
+                  "smooth": true
+                }
+              ]
+            },
+            "backdoor_resistance_chart": {
+              "chart_type": "bar",
+              "title": "后门攻击抵抗性能",
+              "x_axis": {
+                "categories": [
+                  "BadNets",
+                  "Trojan",
+                  "Feature Collision",
+                  "Triggerless",
+                  "Dynamic",
+                  "Physical"
+                ],
+                "label": "攻击类型"
+              },
+              "y_axis": {
+                "min": 0,
+                "max": 100,
+                "label": "攻击成功率 (%)"
+              },
+              "series": [
+                {
+                  "name": "无防御攻击成功率",
+                  "data": [
+                    87.6,
+                    92.3,
+                    85.4,
+                    78.9,
+                    90.1,
+                    83.7
+                  ],
+                  "color": "#e74c3c"
+                },
+                {
+                  "name": "差分隐私防御后",
+                  "data": [
+                    9.2,
+                    7.8,
+                    8.5,
+                    12.3,
+                    6.9,
+                    10.1
+                  ],
+                  "color": "#2ecc71"
+                }
+              ]
+            },
+            "privacy_metrics_table": {
+              "headers": [
+                "隐私指标",
+                "数值",
+                "评级",
+                "说明"
+              ],
+              "rows": [
+                {
+                  "metric": "ε-差分隐私",
+                  "value": "8.0",
+                  "rating": "强",
+                  "description": "隐私保护强度"
+                },
+                {
+                  "metric": "δ-概率",
+                  "value": "1e-5",
+                  "rating": "优秀",
+                  "description": "隐私失败概率"
+                },
+                {
+                  "metric": "噪声乘数",
+                  "value": "1.1",
+                  "rating": "适中",
+                  "description": "梯度噪声强度"
+                },
+                {
+                  "metric": "隐私预算消耗",
+                  "value": "8.0",
+                  "rating": "良好",
+                  "description": "总隐私预算使用"
+                }
+              ]
+            },
+            "performance_comparison_table": {
+              "headers": [
+                "性能指标",
+                "无防御",
+                "差分隐私防御",
+                "变化",
+                "影响类型"
+              ],
+              "rows": [
+                {
+                  "metric": "模型准确率",
+                  "without_defense": "92.5%",
+                  "with_defense": "84.1%",
+                  "change": "-8.4%",
+                  "effect_type": "negative"
+                },
+                {
+                  "metric": "后门攻击成功率",
+                  "without_defense": "87.6%",
+                  "with_defense": "8.7%",
+                  "change": "-78.9%",
+                  "effect_type": "positive"
+                },
+                {
+                  "metric": "隐私保护强度",
+                  "without_defense": "0%",
+                  "with_defense": "94.5%",
+                  "change": "+94.5%",
+                  "effect_type": "positive"
+                },
+                {
+                  "metric": "训练时间",
+                  "without_defense": "1800秒",
+                  "with_defense": "2700秒",
+                  "change": "+900秒",
+                  "effect_type": "negative"
+                },
+                {
+                  "metric": "内存使用",
+                  "without_defense": "3.2GB",
+                  "with_defense": "4.8GB",
+                  "change": "+1.6GB",
+                  "effect_type": "negative"
+                }
+              ]
+            },
+            "training_progress_chart": {
+              "chart_type": "line",
+              "title": "差分隐私训练进度",
+              "x_axis": {
+                "categories": [
+                  "5",
+                  "10",
+                  "15",
+                  "20",
+                  "25",
+                  "30",
+                  "35",
+                  "40",
+                  "45",
+                  "50"
+                ],
+                "label": "训练轮次"
+              },
+              "y_axis": {
+                "min": 60,
+                "max": 90,
+                "label": "准确率 (%)"
+              },
+              "series": [
+                {
+                  "name": "训练准确率",
+                  "data": [
+                    65.2,
+                    68.5,
+                    72.8,
+                    75.6,
+                    78.2,
+                    80.4,
+                    82.1,
+                    83.5,
+                    84.8,
+                    85.3
+                  ],
+                  "color": "#3498db",
+                  "smooth": true
+                },
+                {
+                  "name": "测试准确率",
+                  "data": [
+                    63.7,
+                    67.2,
+                    71.5,
+                    74.2,
+                    76.8,
+                    78.9,
+                    80.6,
+                    82.0,
+                    83.4,
+                    84.1
+                  ],
+                  "color": "#2ecc71",
+                  "smooth": true
+                },
+                {
+                  "name": "隐私预算消耗",
+                  "data": [
+                    0.8,
+                    1.6,
+                    2.4,
+                    3.2,
+                    4.0,
+                    4.8,
+                    5.6,
+                    6.4,
+                    7.2,
+                    8.0
+                  ],
+                  "color": "#e74c3c",
+                  "y_axis": "secondary"
+                }
+              ]
+            },
+            "defense_evaluation_metrics": {
+              "privacy_protection_score": {
+                "value": "94.5%",
+                "percentage": 94.5,
+                "type": "positive"
+              },
+              "utility_preservation": {
+                "value": "84.1%",
+                "percentage": 84.1,
+                "type": "positive"
+              },
+              "backdoor_resistance": {
+                "value": "78.9%",
+                "percentage": 78.9,
+                "type": "positive"
+              },
+              "training_overhead": {
+                "value": "+50.0%",
+                "percentage": 50.0,
+                "type": "negative"
+              }
+            },
+            "attack_type_breakdown": {
+              "BadNets": {
+                "original_success_rate": 87.6,
+                "defended_success_rate": 9.2,
+                "reduction": 78.4,
+                "privacy_protection": 94.5,
+                "utility_preservation": 84.1
+              },
+              "Trojan": {
+                "original_success_rate": 92.3,
+                "defended_success_rate": 7.8,
+                "reduction": 84.5,
+                "privacy_protection": 94.5,
+                "utility_preservation": 84.1
+              },
+              "Feature_Collision": {
+                "original_success_rate": 85.4,
+                "defended_success_rate": 8.5,
+                "reduction": 76.9,
+                "privacy_protection": 94.5,
+                "utility_preservation": 84.1
+              },
+              "Triggerless": {
+                "original_success_rate": 78.9,
+                "defended_success_rate": 12.3,
+                "reduction": 66.6,
+                "privacy_protection": 94.5,
+                "utility_preservation": 84.1
+              }
+            },
+            "performance_summary": {
+              "overall_privacy_protection": "94.5%",
+              "average_backdoor_reduction": "78.9%",
+              "utility_preservation_rate": "84.1%",
+              "privacy_utility_tradeoff": "84.5%",
+              "training_overhead": "50.0%",
+              "recommendation": "差分隐私防御在提供强隐私保护的同时，有效抵抗后门攻击，适用于对隐私和安全性要求高的场景"
+            }
+          },
+          "is_final": true,
+          "completion_timestamp": "2025-12-27T02:18:38.159061"
+        }
+      },
+      "delay": 0
+    }
+  ],
+  "summary": {
+    "final_event": {
+      "resp_code": 0,
+      "resp_msg": "操作成功",
+      "time_stamp": "2025/12/27-02:18:38:158",
+      "data": {
+        "event": "final_result",
+        "callback_params": {
+          "task_run_id": "5g5707h3-6i12-34g6-0a3f-3630j37f6634",
+          "method_type": "隐私保护防御",
+          "algorithm_type": "DifferentialPrivacy",
+          "task_type": "防御执行",
+          "task_name": "差分隐私投毒防御",
+          "parent_task_id": "h87g05d13g719k4eef38040k9773d66hj",
+          "user_name": "zhangxueyou"
+        },
+        "progress": 100,
+        "message": "差分隐私投毒防御任务完成",
+        "log": "[100%] 差分隐私投毒防御任务完成 - 提供(8.0, 1e-5)-DP保证\n",
+        "details": {
+          "training_session_id": "dp_training_session_123456789",
+          "defense_method": "DifferentialPrivacy",
+          "execution_summary": {
+            "total_training_samples": 2500000,
+            "final_accuracy": 0.841,
+            "backdoor_success_rate": 0.087,
+            "attack_success_reduction": 0.789,
+            "privacy_budget_used": 8.0,
+            "privacy_guarantee": "(8.0, 1e-5)-DP",
+            "utility_preservation": 0.841,
+            "total_training_time": "2700.5秒"
+          },
+          "performance_metrics": {
+            "privacy_protection_level": 0.945,
+            "utility_preservation_score": 0.841,
+            "privacy_utility_tradeoff": 0.845,
+            "backdoor_resistance": 0.789,
+            "computational_overhead": 0.12
+          },
+          "privacy_guarantee_analysis": {
+            "epsilon": 8.0,
+            "delta": 1e-05,
+            "noise_multiplier": 1.1,
+            "max_grad_norm": 1.0,
+            "privacy_accounting": "RDP",
+            "privacy_amplification": true,
+            "privacy_guarantee_strength": "强"
+          },
+          "defense_effectiveness": {
+            "backdoor_detection_rate": 0.913,
+            "clean_sample_preservation": 0.841,
+            "privacy_protection": 0.945,
+            "defense_efficiency": 0.878,
+            "overall_effectiveness": "优秀"
+          },
+          "comparison_analysis": {
+            "before_defense": {
+              "accuracy": 0.925,
+              "backdoor_success_rate": 0.876,
+              "privacy_protection": 0.0
+            },
+            "after_defense": {
+              "accuracy": 0.841,
+              "backdoor_success_rate": 0.087,
+              "privacy_protection": 0.945
+            },
+            "defense_impact": {
+              "accuracy_drop": 0.084,
+              "backdoor_reduction": 0.789,
+              "privacy_improvement": 0.945
+            }
+          },
+          "resource_usage": {
+            "device_type": "gpu-single",
+            "actual_training_time": "2700.5秒",
+            "memory_peak_usage": "4.8GB",
+            "storage_used": "220MB",
+            "cpu_utilization": "65%",
+            "gpu_utilization": "88%",
+            "computation_efficiency": "良好"
+          },
+          "output_artifacts": {
+            "dp_model": "/models/differential_privacy/session_123456789/resnet50_dp_epsilon8.0.pth",
+            "privacy_report": "/reports/privacy/session_123456789.json",
+            "training_logs": "/logs/dp_training/session_123456789.log",
+            "evaluation_results": "/results/dp_evaluation/session_123456789/",
+            "visualizations": "/visualizations/differential_privacy/session_123456789/"
+          },
+          "privacy_configuration_recommendation": {
+            "optimal_epsilon": 8.0,
+            "optimal_delta": 1e-05,
+            "noise_multiplier": 1.1,
+            "max_grad_norm": 1.0,
+            "batch_size": 256,
+            "learning_rate": 0.1,
+            "training_epochs": 50
+          },
+          "evaluation_ui_data": {
+            "privacy_utility_tradeoff_chart": {
+              "chart_type": "scatter",
+              "title": "隐私-效用权衡分析",
+              "x_axis": {
+                "label": "隐私保护强度 (ε)",
+                "min": 1,
+                "max": 20
+              },
+              "y_axis": {
+                "label": "模型准确率 (%)",
+                "min": 70,
+                "max": 95
+              },
+              "series": [
+                {
+                  "name": "隐私-效用权衡曲线",
+                  "data": [
+                    {
+                      "epsilon": 1.0,
+                      "accuracy": 72.3
+                    },
+                    {
+                      "epsilon": 2.0,
+                      "accuracy": 76.8
+                    },
+                    {
+                      "epsilon": 4.0,
+                      "accuracy": 80.5
+                    },
+                    {
+                      "epsilon": 8.0,
+                      "accuracy": 84.1
+                    },
+                    {
+                      "epsilon": 16.0,
+                      "accuracy": 87.2
+                    },
+                    {
+                      "epsilon": 20.0,
+                      "accuracy": 88.5
+                    }
+                  ],
+                  "color": "#3498db",
+                  "smooth": true
+                }
+              ]
+            },
+            "backdoor_resistance_chart": {
+              "chart_type": "bar",
+              "title": "后门攻击抵抗性能",
+              "x_axis": {
+                "categories": [
+                  "BadNets",
+                  "Trojan",
+                  "Feature Collision",
+                  "Triggerless",
+                  "Dynamic",
+                  "Physical"
+                ],
+                "label": "攻击类型"
+              },
+              "y_axis": {
+                "min": 0,
+                "max": 100,
+                "label": "攻击成功率 (%)"
+              },
+              "series": [
+                {
+                  "name": "无防御攻击成功率",
+                  "data": [
+                    87.6,
+                    92.3,
+                    85.4,
+                    78.9,
+                    90.1,
+                    83.7
+                  ],
+                  "color": "#e74c3c"
+                },
+                {
+                  "name": "差分隐私防御后",
+                  "data": [
+                    9.2,
+                    7.8,
+                    8.5,
+                    12.3,
+                    6.9,
+                    10.1
+                  ],
+                  "color": "#2ecc71"
+                }
+              ]
+            },
+            "privacy_metrics_table": {
+              "headers": [
+                "隐私指标",
+                "数值",
+                "评级",
+                "说明"
+              ],
+              "rows": [
+                {
+                  "metric": "ε-差分隐私",
+                  "value": "8.0",
+                  "rating": "强",
+                  "description": "隐私保护强度"
+                },
+                {
+                  "metric": "δ-概率",
+                  "value": "1e-5",
+                  "rating": "优秀",
+                  "description": "隐私失败概率"
+                },
+                {
+                  "metric": "噪声乘数",
+                  "value": "1.1",
+                  "rating": "适中",
+                  "description": "梯度噪声强度"
+                },
+                {
+                  "metric": "隐私预算消耗",
+                  "value": "8.0",
+                  "rating": "良好",
+                  "description": "总隐私预算使用"
+                }
+              ]
+            },
+            "performance_comparison_table": {
+              "headers": [
+                "性能指标",
+                "无防御",
+                "差分隐私防御",
+                "变化",
+                "影响类型"
+              ],
+              "rows": [
+                {
+                  "metric": "模型准确率",
+                  "without_defense": "92.5%",
+                  "with_defense": "84.1%",
+                  "change": "-8.4%",
+                  "effect_type": "negative"
+                },
+                {
+                  "metric": "后门攻击成功率",
+                  "without_defense": "87.6%",
+                  "with_defense": "8.7%",
+                  "change": "-78.9%",
+                  "effect_type": "positive"
+                },
+                {
+                  "metric": "隐私保护强度",
+                  "without_defense": "0%",
+                  "with_defense": "94.5%",
+                  "change": "+94.5%",
+                  "effect_type": "positive"
+                },
+                {
+                  "metric": "训练时间",
+                  "without_defense": "1800秒",
+                  "with_defense": "2700秒",
+                  "change": "+900秒",
+                  "effect_type": "negative"
+                },
+                {
+                  "metric": "内存使用",
+                  "without_defense": "3.2GB",
+                  "with_defense": "4.8GB",
+                  "change": "+1.6GB",
+                  "effect_type": "negative"
+                }
+              ]
+            },
+            "training_progress_chart": {
+              "chart_type": "line",
+              "title": "差分隐私训练进度",
+              "x_axis": {
+                "categories": [
+                  "5",
+                  "10",
+                  "15",
+                  "20",
+                  "25",
+                  "30",
+                  "35",
+                  "40",
+                  "45",
+                  "50"
+                ],
+                "label": "训练轮次"
+              },
+              "y_axis": {
+                "min": 60,
+                "max": 90,
+                "label": "准确率 (%)"
+              },
+              "series": [
+                {
+                  "name": "训练准确率",
+                  "data": [
+                    65.2,
+                    68.5,
+                    72.8,
+                    75.6,
+                    78.2,
+                    80.4,
+                    82.1,
+                    83.5,
+                    84.8,
+                    85.3
+                  ],
+                  "color": "#3498db",
+                  "smooth": true
+                },
+                {
+                  "name": "测试准确率",
+                  "data": [
+                    63.7,
+                    67.2,
+                    71.5,
+                    74.2,
+                    76.8,
+                    78.9,
+                    80.6,
+                    82.0,
+                    83.4,
+                    84.1
+                  ],
+                  "color": "#2ecc71",
+                  "smooth": true
+                },
+                {
+                  "name": "隐私预算消耗",
+                  "data": [
+                    0.8,
+                    1.6,
+                    2.4,
+                    3.2,
+                    4.0,
+                    4.8,
+                    5.6,
+                    6.4,
+                    7.2,
+                    8.0
+                  ],
+                  "color": "#e74c3c",
+                  "y_axis": "secondary"
+                }
+              ]
+            },
+            "defense_evaluation_metrics": {
+              "privacy_protection_score": {
+                "value": "94.5%",
+                "percentage": 94.5,
+                "type": "positive"
+              },
+              "utility_preservation": {
+                "value": "84.1%",
+                "percentage": 84.1,
+                "type": "positive"
+              },
+              "backdoor_resistance": {
+                "value": "78.9%",
+                "percentage": 78.9,
+                "type": "positive"
+              },
+              "training_overhead": {
+                "value": "+50.0%",
+                "percentage": 50.0,
+                "type": "negative"
+              }
+            },
+            "attack_type_breakdown": {
+              "BadNets": {
+                "original_success_rate": 87.6,
+                "defended_success_rate": 9.2,
+                "reduction": 78.4,
+                "privacy_protection": 94.5,
+                "utility_preservation": 84.1
+              },
+              "Trojan": {
+                "original_success_rate": 92.3,
+                "defended_success_rate": 7.8,
+                "reduction": 84.5,
+                "privacy_protection": 94.5,
+                "utility_preservation": 84.1
+              },
+              "Feature_Collision": {
+                "original_success_rate": 85.4,
+                "defended_success_rate": 8.5,
+                "reduction": 76.9,
+                "privacy_protection": 94.5,
+                "utility_preservation": 84.1
+              },
+              "Triggerless": {
+                "original_success_rate": 78.9,
+                "defended_success_rate": 12.3,
+                "reduction": 66.6,
+                "privacy_protection": 94.5,
+                "utility_preservation": 84.1
+              }
+            },
+            "performance_summary": {
+              "overall_privacy_protection": "94.5%",
+              "average_backdoor_reduction": "78.9%",
+              "utility_preservation_rate": "84.1%",
+              "privacy_utility_tradeoff": "84.5%",
+              "training_overhead": "50.0%",
+              "recommendation": "差分隐私防御在提供强隐私保护的同时，有效抵抗后门攻击，适用于对隐私和安全性要求高的场景"
+            }
+          },
+          "is_final": true,
+          "completion_timestamp": "2025-12-27T02:18:38.159061"
+        }
+      },
+      "delay": 0
+    }
+  }
+}

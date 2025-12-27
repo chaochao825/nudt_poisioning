@@ -1,0 +1,263 @@
+{
+  "attack_sse_messages": {
+    "TriggerlessDynamicBackdoor": {
+      "model_info": {
+        "model_name": "resnet50_stream",
+        "dataset": "UCF101",
+        "poison_ratio": 0.05,
+        "target_label": 2,
+        "category": "实战"
+      },
+      "sse_messages": [
+        {
+          "resp_code": 0,
+          "resp_msg": "ok",
+          "data": {
+            "event": "process_start",
+            "callback_params": {
+              "task_run_id": "triggerlessdynamicbackdoor-e99886b5",
+              "method_type": "数据投毒",
+              "algorithm_type": "TriggerlessDynamicBackdoor",
+              "task_type": "投毒执行",
+              "task_name": "TriggerlessDynamicBackdoor数据投毒",
+              "user_name": "auto_builder"
+            },
+            "progress": 5,
+            "message": "投毒流程初始化",
+            "details": {
+              "dataset": "UCF101",
+              "poison_ratio": 0.05,
+              "trigger_type": "dynamic_pattern",
+              "category": "实战"
+            }
+          }
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "ok",
+          "data": {
+            "event": "dataset_loaded",
+            "callback_params": {
+              "task_run_id": "triggerlessdynamicbackdoor-e99886b5",
+              "method_type": "数据投毒",
+              "algorithm_type": "TriggerlessDynamicBackdoor",
+              "task_type": "投毒执行",
+              "task_name": "TriggerlessDynamicBackdoor数据投毒",
+              "user_name": "auto_builder"
+            },
+            "progress": 15,
+            "message": "数据集加载完成",
+            "details": {
+              "train_samples": 2048,
+              "validation_samples": 256
+            }
+          }
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "ok",
+          "data": {
+            "event": "poison_generation_start",
+            "callback_params": {
+              "task_run_id": "triggerlessdynamicbackdoor-e99886b5",
+              "method_type": "数据投毒",
+              "algorithm_type": "TriggerlessDynamicBackdoor",
+              "task_type": "投毒执行",
+              "task_name": "TriggerlessDynamicBackdoor数据投毒",
+              "user_name": "auto_builder"
+            },
+            "progress": 30,
+            "message": "开始构造投毒样本",
+            "details": {
+              "target_label": 2,
+              "samples_to_poison": 102
+            }
+          }
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "ok",
+          "data": {
+            "event": "poison_generation_progress",
+            "callback_params": {
+              "task_run_id": "triggerlessdynamicbackdoor-e99886b5",
+              "method_type": "数据投毒",
+              "algorithm_type": "TriggerlessDynamicBackdoor",
+              "task_type": "投毒执行",
+              "task_name": "TriggerlessDynamicBackdoor数据投毒",
+              "user_name": "auto_builder"
+            },
+            "progress": 40,
+            "message": "投毒样本生成中",
+            "details": {
+              "completed": 61,
+              "stealth_score": 0.82
+            }
+          }
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "ok",
+          "data": {
+            "event": "poison_generation_completed",
+            "callback_params": {
+              "task_run_id": "triggerlessdynamicbackdoor-e99886b5",
+              "method_type": "数据投毒",
+              "algorithm_type": "TriggerlessDynamicBackdoor",
+              "task_type": "投毒执行",
+              "task_name": "TriggerlessDynamicBackdoor数据投毒",
+              "user_name": "auto_builder"
+            },
+            "progress": 50,
+            "message": "投毒样本准备就绪",
+            "details": {
+              "poisoned_samples": 102,
+              "storage_path": "poison/triggerlessdynamicbackdoor_patches.bin"
+            }
+          }
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "ok",
+          "data": {
+            "event": "training_epoch",
+            "callback_params": {
+              "task_run_id": "triggerlessdynamicbackdoor-e99886b5",
+              "method_type": "数据投毒",
+              "algorithm_type": "TriggerlessDynamicBackdoor",
+              "task_type": "投毒执行",
+              "task_name": "TriggerlessDynamicBackdoor数据投毒",
+              "user_name": "auto_builder"
+            },
+            "progress": 60,
+            "message": "训练轮次2完成",
+            "details": {
+              "epoch": 2,
+              "loss": 0.85,
+              "accuracy": 0.77
+            }
+          }
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "ok",
+          "data": {
+            "event": "training_epoch",
+            "callback_params": {
+              "task_run_id": "triggerlessdynamicbackdoor-e99886b5",
+              "method_type": "数据投毒",
+              "algorithm_type": "TriggerlessDynamicBackdoor",
+              "task_type": "投毒执行",
+              "task_name": "TriggerlessDynamicBackdoor数据投毒",
+              "user_name": "auto_builder"
+            },
+            "progress": 70,
+            "message": "训练轮次4完成",
+            "details": {
+              "epoch": 4,
+              "loss": 0.75,
+              "accuracy": 0.78
+            }
+          }
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "ok",
+          "data": {
+            "event": "training_epoch",
+            "callback_params": {
+              "task_run_id": "triggerlessdynamicbackdoor-e99886b5",
+              "method_type": "数据投毒",
+              "algorithm_type": "TriggerlessDynamicBackdoor",
+              "task_type": "投毒执行",
+              "task_name": "TriggerlessDynamicBackdoor数据投毒",
+              "user_name": "auto_builder"
+            },
+            "progress": 78,
+            "message": "训练轮次6完成",
+            "details": {
+              "epoch": 6,
+              "loss": 0.65,
+              "accuracy": 0.79
+            }
+          }
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "ok",
+          "data": {
+            "event": "evaluation_clean",
+            "callback_params": {
+              "task_run_id": "triggerlessdynamicbackdoor-e99886b5",
+              "method_type": "数据投毒",
+              "algorithm_type": "TriggerlessDynamicBackdoor",
+              "task_type": "投毒执行",
+              "task_name": "TriggerlessDynamicBackdoor数据投毒",
+              "user_name": "auto_builder"
+            },
+            "progress": 85,
+            "message": "干净样本评估",
+            "details": {
+              "clean_accuracy": 0.8,
+              "accuracy_drop": 0.02
+            }
+          }
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "ok",
+          "data": {
+            "event": "evaluation_backdoor",
+            "callback_params": {
+              "task_run_id": "triggerlessdynamicbackdoor-e99886b5",
+              "method_type": "数据投毒",
+              "algorithm_type": "TriggerlessDynamicBackdoor",
+              "task_type": "投毒执行",
+              "task_name": "TriggerlessDynamicBackdoor数据投毒",
+              "user_name": "auto_builder"
+            },
+            "progress": 92,
+            "message": "后门触发评估",
+            "details": {
+              "backdoor_success_rate": 0.58,
+              "trigger_samples": 64
+            }
+          }
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "ok",
+          "data": {
+            "event": "result_finalized",
+            "callback_params": {
+              "task_run_id": "triggerlessdynamicbackdoor-e99886b5",
+              "method_type": "数据投毒",
+              "algorithm_type": "TriggerlessDynamicBackdoor",
+              "task_type": "投毒执行",
+              "task_name": "TriggerlessDynamicBackdoor数据投毒",
+              "user_name": "auto_builder"
+            },
+            "progress": 100,
+            "message": "输出训练摘要",
+            "details": {
+              "clean_accuracy": 0.8,
+              "poisoned_accuracy": 0.78,
+              "backdoor_success_rate": 0.58,
+              "notes": "占位结果，便于调试"
+            }
+          }
+        }
+      ],
+      "task_status": "completed"
+    }
+  },
+  "metadata": {
+    "generated_time": "2025-12-04T16:01:06Z",
+    "version": "1.1",
+    "description": "TriggerlessDynamicBackdoor数据投毒执行阶段",
+    "dataset_info": {
+      "name": "UCF101",
+      "poison_ratio": 0.05
+    }
+  }
+}

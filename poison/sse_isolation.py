@@ -4,23 +4,19 @@ from sklearn.ensemble import IsolationForest
 from sklearn.metrics import classification_report
 from data import get_data
 from model import get_model
-import json
+from utils import sse_envelope, RunSummary, set_summary_writer
 
-def sse_print(event: str, data: dict) -> str:
-    """
-    SSE 打印
-    :param event: 事件名称
-    :param data: 事件数据（字典或能被 json 序列化的对象）
-    :return: SSE 格式字符串
-    """
-    # 将数据转成 JSON 字符串
-    json_str = json.dumps(data, ensure_ascii=False, default=lambda obj: obj.item() if isinstance(obj, np.generic) else obj)
-    
-    # 按 SSE 协议格式拼接
-    message = f"event: {event}\n" \
-              f"data: {json_str}\n\n"
-    print(message, flush=True, end='')
-    return message
+
+def emit(event: str, data: dict, progress: float = None, log: str = None):
+    message = data.get("message", event)
+    details = {k: v for k, v in data.items() if k != "message"}
+    return sse_envelope(
+        event=event,
+        progress=progress,
+        message=message,
+        log=log,
+        details=details,
+    )
 
 class AnomalyDetector:
     """
@@ -94,10 +90,10 @@ class AnomalyDetector:
         
         # 训练模型
         self.iso_forest.fit(features)
-        sse_print("training_complete", {
+        emit("training_complete", {
             "message": f"Isolation Forest模型训练完成，预期异常比例: {self.contamination*100:.1f}%",
             "contamination": self.contamination
-        })
+        }, progress=60)
         
     def predict(self, x_data):
         """
@@ -164,7 +160,7 @@ class AnomalyDetector:
             suspected_anomaly_rate, suspected_anomalies, len(suspected_predictions)
         )
         
-        sse_print("evaluation_metrics", metrics_data)
+        emit("evaluation_metrics", metrics_data, progress=75)
         
         detection_result = {
             'clean_anomaly_rate': clean_anomaly_rate,
@@ -177,17 +173,17 @@ class AnomalyDetector:
         if suspected_anomaly_rate > clean_anomaly_rate:
             warning_msg = "警告: 可疑数据中的异常比例显著高于干净数据，可能存在投毒攻击!"
             increase_msg = f"异常比例增加了 {(suspected_anomaly_rate/clean_anomaly_rate - 1)*100:.1f}%"
-            sse_print("poisoning_detected", {
+            emit("poisoning_detected", {
                 "warning": warning_msg,
                 "increase_info": increase_msg,
                 "is_attack_detected": True
-            })
+            }, progress=85)
         else:
             info_msg = "可疑数据中的异常比例在正常范围内，未发现明显投毒迹象。"
-            sse_print("no_poisoning_detected", {
+            emit("no_poisoning_detected", {
                 "info": info_msg,
                 "is_attack_detected": False
-            })
+            }, progress=85)
             
         return detection_result
     
@@ -259,17 +255,17 @@ class AnomalyDetector:
             title: 标题
         """
         stats = self.get_detailed_stats(x_data)
-        sse_print("detailed_stats", {
+        emit("detailed_stats", {
             "title": title,
             "statistics": stats
-        })
+        }, progress=90)
 
 
 def demo_anomaly_detection():
     """
     演示异常检测功能
     """
-    sse_print("start", {"message": "开始Isolation Forest投毒检测算法..."})
+    emit("process_start", {"message": "开始Isolation Forest投毒检测算法..."}, progress=5)
     
     # 获取数据参数
     param = {
@@ -291,11 +287,11 @@ def demo_anomaly_detection():
                 for h in range(3):
                     x_train_mixed[i][c][-(w+2)][-(h+2)] = 255
     
-    sse_print("poisoned_samples_created", {
+    emit("poisoned_samples_created", {
         "count": num_poison,
         "percentage": num_poison/x_train.shape[0]*100,
         "message": f"创建了 {num_poison} 个投毒样本 ({num_poison/x_train.shape[0]*100:.1f}%)"
-    })
+    }, progress=20)
     
     # 初始化异常检测器
     detector = AnomalyDetector(contamination=0.1)
@@ -314,10 +310,16 @@ def demo_anomaly_detection():
     detector.print_detailed_stats(x_test[:1000], "干净测试数据统计")
     detector.print_detailed_stats(x_train_mixed[:1000], "混合训练数据统计")
     
-    sse_print("complete", {"message": "投毒防御完成"})
-    return detector
+    final_payload = emit("final_result", {"message": "投毒防御完成"}, progress=100)
+    return detector, final_payload
 
 
 if __name__ == "__main__":
-    # 运行演示
-    detector = demo_anomaly_detection()
+    summary_writer = RunSummary("./output/isolation_defense", filename="defense_summary.json")
+    set_summary_writer(summary_writer)
+    final_payload = None
+    try:
+        detector, final_payload = demo_anomaly_detection()
+    finally:
+        summary_writer.flush(extra={"final_event": final_payload})
+        set_summary_writer(None)

@@ -1,0 +1,46 @@
+{
+  "attack_sse_messages": {
+    "NeuronInterference": {
+      "model_info": {
+        "model_name": "resnet34",
+        "dataset": "CIFAR-10",
+        "poison_ratio": 0.0,
+        "target_label": -1,
+        "category": "实战"
+      },
+      "sse_messages": [
+        {
+          "resp_code": 1,
+          "resp_msg": "unsupported",
+          "data": {
+            "event": "not_supported",
+            "callback_params": {
+              "task_run_id": "neuroninterference-39c60be4",
+              "method_type": "数据投毒",
+              "algorithm_type": "NeuronInterference",
+              "task_type": "投毒执行",
+              "task_name": "NeuronInterference数据投毒",
+              "user_name": "auto_builder"
+            },
+            "progress": 0,
+            "message": "该算法暂未接入",
+            "details": {
+              "reason": "Pipeline 未完成",
+              "suggestion": "等待后续版本"
+            }
+          }
+        }
+      ],
+      "task_status": "cancelled"
+    }
+  },
+  "metadata": {
+    "generated_time": "2025-12-04T16:01:06Z",
+    "version": "1.1",
+    "description": "NeuronInterference数据投毒执行阶段",
+    "dataset_info": {
+      "name": "CIFAR-10",
+      "poison_ratio": 0.0
+    }
+  }
+}

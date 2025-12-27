@@ -1,0 +1,724 @@
+{
+  "defense_sse_messages": {
+    "NC": {
+      "defense_info": {
+        "defense_name": "NC数据投毒防御",
+        "defense_type": "异常检测",
+        "mechanisms": ["后门检测", "后门移除", "模型清理", "性能评估"],
+        "detection_accuracy": "85%",
+        "defense_effectiveness": "高"
+      },
+      "sse_messages": [
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:00:00:123",
+          "data": {
+            "event": "defense_start",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "数据投毒防御",
+              "algorithm_type": "NC",
+              "task_type": "防御执行",
+              "task_name": "NC数据投毒防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 5,
+            "message": "开始数据投毒防御任务",
+            "log": "[5%] 开始NC数据投毒防御任务\n",
+            "details": {
+              "defense_method": "NC",
+              "target_model": "resnet50_v1",
+              "dataset": "CIFAR-10",
+              "defense_mode": "backdoor_removal",
+              "business_params": {
+                "training_session_id": "defense_session_123456789",
+                "model_config": {
+                  "model_name": "ResNet-50",
+                  "model_path": "/data/poisoned_models/session_123456789/resnet50_poisoned_badnets_v1.pth",
+                  "model_type": "classification"
+                },
+                "dataset_config": {
+                  "dataset_name": "CIFAR-10",
+                  "dataset_path": "/datasets/cifar10/processed",
+                  "total_samples": 5000
+                },
+                "defense_config": {
+                  "defense_name": "NC",
+                  "defense_type": "异常检测"
+                },
+                "parameter_config": {
+                  "sensitivity": 0.7,
+                  "max_iterations": 500,
+                  "anomaly_threshold": 0.05
+                },
+                "computation_resources": {
+                  "device_type": "gpu-single",
+                  "num_workers": 4,
+                  "max_defense_time": 2700
+                }
+              }
+            }
+          },
+          "delay": 1
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:00:01:456",
+          "data": {
+            "event": "model_loaded",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "数据投毒防御",
+              "algorithm_type": "NC",
+              "task_type": "防御执行",
+              "task_name": "NC数据投毒防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 10,
+            "message": "投毒模型加载成功",
+            "log": "[10%] 投毒模型加载完成\n",
+            "details": {
+              "model_name": "ResNet-50",
+              "model_path": "/data/poisoned_models/session_123456789/resnet50_poisoned_badnets_v1.pth",
+              "model_type": "classification",
+              "input_shape": [3, 32, 32],
+              "num_classes": 10,
+              "model_parameters": 23528522,
+              "poisoned_accuracy": 0.903,
+              "backdoor_success_rate": 0.876
+            }
+          },
+          "delay": 2
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:00:03:789",
+          "data": {
+            "event": "dataset_loaded",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "数据投毒防御",
+              "algorithm_type": "NC",
+              "task_type": "防御执行",
+              "task_name": "NC数据投毒防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 15,
+            "message": "数据集加载完成",
+            "log": "[15%] 数据集加载完成\n",
+            "details": {
+              "dataset_name": "CIFAR-10",
+              "dataset_path": "/datasets/cifar10/processed",
+              "test_samples": 500,
+              "clean_samples": 450,
+              "trigger_samples": 50,
+              "class_distribution": {
+                "airplane": 0.1,
+                "automobile": 0.1,
+                "bird": 0.1,
+                "cat": 0.1,
+                "deer": 0.1,
+                "dog": 0.1,
+                "frog": 0.1,
+                "horse": 0.1,
+                "ship": 0.1,
+                "truck": 0.1
+              }
+            }
+          },
+          "delay": 1
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:00:05:123",
+          "data": {
+            "event": "backdoor_detection_start",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "数据投毒防御",
+              "algorithm_type": "NC",
+              "task_type": "防御执行",
+              "task_name": "NC数据投毒防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 20,
+            "message": "开始后门检测分析",
+            "log": "[20%] 开始后门检测分析\n",
+            "details": {
+              "detection_phase": "backdoor_analysis",
+              "sensitivity": 0.7,
+              "max_iterations": 500,
+              "anomaly_threshold": 0.05,
+              "current_progress": 0
+            }
+          },
+          "delay": 2
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:05:15:456",
+          "data": {
+            "event": "backdoor_detection_progress",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "数据投毒防御",
+              "algorithm_type": "NC",
+              "task_type": "防御执行",
+              "task_name": "NC数据投毒防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 35,
+            "message": "后门检测分析中",
+            "log": "[35%] 后门检测分析进度: 150/500次迭代\n",
+            "details": {
+              "detection_phase": "backdoor_analysis",
+              "iterations_completed": 150,
+              "total_iterations": 500,
+              "detection_progress": 30,
+              "anomaly_score": 0.045,
+              "suspected_backdoors": 3
+            }
+          },
+          "delay": 3
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:15:25:789",
+          "data": {
+            "event": "backdoor_detection_completed",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "数据投毒防御",
+              "algorithm_type": "NC",
+              "task_type": "防御执行",
+              "task_name": "NC数据投毒防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 40,
+            "message": "后门检测分析完成",
+            "log": "[40%] 后门检测分析完成\n",
+            "details": {
+              "detection_phase": "backdoor_analysis",
+              "iterations_completed": 500,
+              "detected_backdoors": 2,
+              "anomaly_scores": [0.078, 0.065],
+              "detection_confidence": [0.92, 0.87],
+              "detection_time": "922.7秒"
+            }
+          },
+          "delay": 2
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:15:28:123",
+          "data": {
+            "event": "backdoor_removal_start",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "数据投毒防御",
+              "algorithm_type": "NC",
+              "task_type": "防御执行",
+              "task_name": "NC数据投毒防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 45,
+            "message": "开始后门移除处理",
+            "log": "[45%] 开始后门移除处理\n",
+            "details": {
+              "removal_phase": "backdoor_removal",
+              "defense_strength": 5,
+              "detected_backdoors": 2,
+              "removal_method": "neural_cleanse",
+              "current_progress": 0
+            }
+          },
+          "delay": 2
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:20:35:456",
+          "data": {
+            "event": "backdoor_removal_progress",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "数据投毒防御",
+              "algorithm_type": "NC",
+              "task_type": "防御执行",
+              "task_name": "NC数据投毒防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 60,
+            "message": "后门移除处理中",
+            "log": "[60%] 后门移除进度: 第1个后门移除完成\n",
+            "details": {
+              "removal_phase": "backdoor_removal",
+              "backdoors_removed": 1,
+              "total_backdoors": 2,
+              "removal_progress": 50,
+              "current_backdoor_confidence": 0.87,
+              "removal_effectiveness": 0.85
+            }
+          },
+          "delay": 3
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:25:45:789",
+          "data": {
+            "event": "backdoor_removal_completed",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "数据投毒防御",
+              "algorithm_type": "NC",
+              "task_type": "防御执行",
+              "task_name": "NC数据投毒防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 70,
+            "message": "后门移除处理完成",
+            "log": "[70%] 后门移除处理完成\n",
+            "details": {
+              "removal_phase": "backdoor_removal",
+              "backdoors_removed": 2,
+              "removal_success_rate": 1.0,
+              "average_removal_confidence": 0.895,
+              "removal_time": "619.7秒"
+            }
+          },
+          "delay": 2
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:25:48:123",
+          "data": {
+            "event": "model_cleaning_start",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "数据投毒防御",
+              "algorithm_type": "NC",
+              "task_type": "防御执行",
+              "task_name": "NC数据投毒防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 75,
+            "message": "开始模型清理优化",
+            "log": "[75%] 开始模型清理优化\n",
+            "details": {
+              "cleaning_phase": "model_optimization",
+              "clean_retraining": true,
+              "preserve_performance": true,
+              "optimization_epochs": 10,
+              "current_progress": 0
+            }
+          },
+          "delay": 2
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:35:55:456",
+          "data": {
+            "event": "model_cleaning_progress",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "数据投毒防御",
+              "algorithm_type": "NC",
+              "task_type": "防御执行",
+              "task_name": "NC数据投毒防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 85,
+            "message": "模型清理优化中",
+            "log": "[85%] 模型清理优化进度: 5/10轮\n",
+            "details": {
+              "cleaning_phase": "model_optimization",
+              "current_epoch": 5,
+              "total_epochs": 10,
+              "cleaning_loss": 0.432,
+              "current_accuracy": 0.895,
+              "backdoor_success_rate": 0.152,
+              "learning_rate": 0.0005
+            }
+          },
+          "delay": 4
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:45:05:789",
+          "data": {
+            "event": "model_cleaning_completed",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "数据投毒防御",
+              "algorithm_type": "NC",
+              "task_type": "防御执行",
+              "task_name": "NC数据投毒防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 90,
+            "message": "模型清理优化完成",
+            "log": "[90%] 模型清理优化完成\n",
+            "details": {
+              "cleaning_phase": "model_optimization",
+              "total_epochs": 10,
+              "final_cleaning_loss": 0.321,
+              "final_accuracy": 0.918,
+              "backdoor_success_rate": 0.052,
+              "cleaning_time": "1159.7秒"
+            }
+          },
+          "delay": 1
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:45:07:123",
+          "data": {
+            "event": "defense_evaluation_start",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "数据投毒防御",
+              "algorithm_type": "NC",
+              "task_type": "防御执行",
+              "task_name": "NC数据投毒防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 92,
+            "message": "开始防御效果评估",
+            "log": "[92%] 开始防御效果评估\n",
+            "details": {
+              "evaluation_phase": "defense_effectiveness",
+              "test_samples": 500,
+              "trigger_samples": 50,
+              "evaluation_metrics": ["clean_accuracy", "backdoor_success_rate", "defense_effectiveness", "performance_preservation"]
+            }
+          },
+          "delay": 1
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:46:25:456",
+          "data": {
+            "event": "clean_accuracy_evaluated",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "数据投毒防御",
+              "algorithm_type": "NC",
+              "task_type": "防御执行",
+              "task_name": "NC数据投毒防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 94,
+            "message": "干净样本准确率评估完成",
+            "log": "[94%] 干净样本准确率评估完成\n",
+            "details": {
+              "clean_accuracy": 0.918,
+              "original_accuracy": 0.925,
+              "poisoned_accuracy": 0.903,
+              "accuracy_preservation": 0.987,
+              "samples_evaluated": 500,
+              "evaluation_time": "75.3秒"
+            }
+          },
+          "delay": 1
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:47:15:789",
+          "data": {
+            "event": "backdoor_evaluated",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "数据投毒防御",
+              "algorithm_type": "NC",
+              "task_type": "防御执行",
+              "task_name": "NC数据投毒防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 96,
+            "message": "后门触发成功率评估完成",
+            "log": "[96%] 后门触发成功率评估完成\n",
+            "details": {
+              "backdoor_success_rate": 0.052,
+              "original_backdoor_rate": 0.876,
+              "reduction_rate": 0.824,
+              "trigger_samples": 50,
+              "successful_triggers": 3,
+              "evaluation_time": "50.3秒"
+            }
+          },
+          "delay": 1
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:47:17:123",
+          "data": {
+            "event": "defense_metrics_evaluated",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "数据投毒防御",
+              "algorithm_type": "NC",
+              "task_type": "防御执行",
+              "task_name": "NC数据投毒防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 98,
+            "message": "防御指标评估完成",
+            "log": "[98%] 防御指标评估完成\n",
+            "details": {
+              "defense_effectiveness": 0.925,
+              "false_positive_rate": 0.032,
+              "detection_accuracy": 0.925,
+              "computational_overhead": 0.15,
+              "robustness_score": 0.78
+            }
+          },
+          "delay": 1
+        },
+        {
+          "resp_code": 0,
+          "resp_msg": "操作成功",
+          "time_stamp": "2024/07/01-17:47:19:456",
+          "data": {
+            "event": "model_saved",
+            "callback_params": {
+              "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+              "method_type": "数据投毒防御",
+              "algorithm_type": "NC",
+              "task_type": "防御执行",
+              "task_name": "NC数据投毒防御",
+              "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+              "user_name": "zhangxueyou"
+            },
+            "progress": 99,
+            "message": "防御模型保存完成",
+            "log": "[99%] 防御模型保存完成\n",
+            "details": {
+              "model_save_path": "/data/defense_models/session_123456789/resnet50_defended_nc_v1.pth",
+              "detected_samples_path": "/data/defense_models/session_123456789/detected_samples/",
+              "defense_report": "/reports/defense/session_123456789.pdf",
+              "model_size": "189.2MB",
+              "save_time": "30.3秒"
+            }
+          },
+          "delay": 1
+        },
+{
+  "resp_code": 0,
+  "resp_msg": "操作成功",
+  "time_stamp": "2024/07/01-17:47:30:789",
+  "data": {
+    "event": "final_result",
+    "callback_params": {
+      "task_run_id": "4f2504e0-4f89-11d3-9a0c-0305e82c3302",
+      "method_type": "数据投毒防御",
+      "algorithm_type": "NC",
+      "task_type": "防御执行",
+      "task_name": "NC数据投毒防御",
+      "parent_task_id": "f54d72a78c264f9bb93695f522881e7d",
+      "user_name": "zhangxueyou"
+    },
+    "progress": 100,
+    "message": "NC数据投毒防御任务完成",
+    "log": "[100%] NC数据投毒防御任务完成\n",
+    "details": {
+      "training_session_id": "defense_session_123456789",
+      "defense_method": "NC",
+      "execution_summary": {
+        "detected_backdoors": 2,
+        "removed_backdoors": 2,
+        "original_backdoor_rate": 0.876,
+        "defended_backdoor_rate": 0.052,
+        "backdoor_reduction": 0.824,
+        "original_accuracy": 0.925,
+        "defended_accuracy": 0.918,
+        "accuracy_preservation": 0.987,
+        "total_defense_time": "2847.7秒"
+      },
+      "performance_metrics": {
+        "defense_effectiveness": 0.925,
+        "false_positive_rate": 0.032,
+        "detection_accuracy": 0.925,
+        "computational_overhead": 0.15,
+        "robustness_score": 0.78
+      },
+      "defense_effectiveness": {
+        "backdoor_detection_rate": 1.0,
+        "backdoor_removal_rate": 1.0,
+        "performance_preservation": 0.987,
+        "defense_efficiency": 0.925,
+        "overall_effectiveness": "优秀"
+      },
+      "comparison_analysis": {
+        "before_defense": {
+          "accuracy": 0.903,
+          "backdoor_success_rate": 0.876
+        },
+        "after_defense": {
+          "accuracy": 0.918,
+          "backdoor_success_rate": 0.052
+        },
+        "defense_impact": {
+          "accuracy_improvement": 0.015,
+          "backdoor_reduction": 0.824
+        }
+      },
+      "resource_usage": {
+        "device_type": "gpu-single",
+        "actual_defense_time": "2847.7秒",
+        "memory_peak_usage": "5.2GB",
+        "storage_used": "920MB",
+        "computation_efficiency": "良好"
+      },
+      "output_artifacts": {
+        "defended_model": "/data/defense_models/session_123456789/resnet50_defended_nc_v1.pth",
+        "detected_samples": "/data/defense_models/session_123456789/detected_samples/",
+        "defense_logs": "/logs/defense_training/session_123456789.log",
+        "evaluation_report": "/reports/defense/session_123456789.pdf",
+        "visualizations": "/visualizations/defense/session_123456789/"
+      },
+      "evaluation_ui_data": {
+        "performance_comparison_chart": {
+          "chart_type": "bar",
+          "title": "模型性能对比",
+          "x_axis": ["原始模型", "投毒后模型", "防御后模型"],
+          "y_axis_label": "百分比(%)",
+          "series": [
+            {
+              "name": "准确率",
+              "data": [92.5, 90.3, 91.8],
+              "color": "#3498db"
+            },
+            {
+              "name": "后门触发率",
+              "data": [0, 87.6, 5.2],
+              "color": "#e74c3c"
+            }
+          ]
+        },
+        "backdoor_trigger_chart": {
+          "chart_type": "line",
+          "title": "后门触发率变化",
+          "x_axis": ["BadNets", "Trojan", "Feature Collision", "Triggerless", "Dynamic", "Physical"],
+          "y_axis_label": "后门触发率(%)",
+          "series": [
+            {
+              "name": "后门触发率",
+              "data": [5.2, 8.7, 12.3, 15.8, 7.5, 9.2],
+              "color": "#2ecc71",
+              "smooth": true
+            }
+          ]
+        },
+        "defense_evaluation_metrics": {
+          "backdoor_detection_accuracy": 92.5,
+          "false_positive_rate": 3.2,
+          "model_performance_preservation": 98.7,
+          "computation_overhead_increase": 15
+        },
+        "performance_comparison_table": {
+          "headers": ["性能指标", "原始模型", "投毒后模型", "防御后模型", "防御效果"],
+          "rows": [
+            {
+              "metric": "准确率",
+              "original_model": "92.5%",
+              "poisoned_model": "90.3%",
+              "defended_model": "91.8%",
+              "defense_effect": "+1.5%",
+              "effect_type": "improvement"
+            },
+            {
+              "metric": "后门触发率",
+              "original_model": "0%",
+              "poisoned_model": "87.6%",
+              "defended_model": "5.2%",
+              "defense_effect": "-82.4%",
+              "effect_type": "improvement"
+            },
+            {
+              "metric": "鲁棒性评分",
+              "original_model": "85%",
+              "poisoned_model": "45%",
+              "defended_model": "78%",
+              "defense_effect": "+33%",
+              "effect_type": "improvement"
+            },
+            {
+              "metric": "模型推理时间",
+              "original_model": "15ms",
+              "poisoned_model": "15ms",
+              "defended_model": "17ms",
+              "defense_effect": "+2ms",
+              "effect_type": "deterioration"
+            }
+          ]
+        },
+        "defense_statistics": [
+          {
+            "value": "82.4%",
+            "label": "后门触发率降低"
+          },
+          {
+            "value": "91.8%",
+            "label": "模型准确率"
+          },
+          {
+            "value": "78%",
+            "label": "鲁棒性评分"
+          },
+          {
+            "value": "+13.3%",
+            "label": "计算开销增加"
+          }
+        ]
+      }
+    }
+  },
+  "delay": 0
+}
+      ],
+      "total_duration": 47,
+      "task_status": "completed"
+    }
+  },
+  "metadata": {
+    "generated_time": "2024/07/01-17:00:00:000",
+    "version": "1.0",
+    "description": "数据投毒防御SSE打桩数据 - NC神经网络清洗防御方法",
+    "defense_config": {
+      "defense_methods": ["NC数据投毒防御"],
+      "total_samples": 500,
+      "evaluation_criteria": ["defense_effectiveness", "accuracy_preservation", "backdoor_reduction", "computational_efficiency"]
+    }
+  }
+}

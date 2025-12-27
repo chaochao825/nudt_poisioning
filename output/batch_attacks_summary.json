@@ -1,0 +1,832 @@
+{
+  "events": [
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:103",
+      "data": {
+        "event": "batch_start",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 1,
+        "message": "批量攻击测试开始",
+        "log": "[1%] 开始批量攻击模拟",
+        "details": {
+          "attacks": [
+            "BadNets",
+            "Trojan",
+            "FeatureCollision",
+            "Triggerless",
+            "DynamicBackdoor",
+            "PhysicalBackdoor",
+            "NeuronInterference",
+            "ModelPoisoning",
+            "FGSM",
+            "PGD",
+            "Optimization",
+            "MI-FGSM",
+            "BackdoorPoison"
+          ]
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:103",
+      "data": {
+        "event": "attack_start",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 4,
+        "message": "开始 BadNets",
+        "log": "[BadNets] 启动",
+        "details": {
+          "attack": "BadNets",
+          "index": 1,
+          "total": 13
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:105",
+      "data": {
+        "event": "attack_done",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 4,
+        "message": "BadNets 完成",
+        "log": "[BadNets] 完成",
+        "details": {
+          "attack": "BadNets",
+          "status": "success"
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:105",
+      "data": {
+        "event": "attack_start",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 5,
+        "message": "开始 Trojan",
+        "log": "[Trojan] 启动",
+        "details": {
+          "attack": "Trojan",
+          "index": 2,
+          "total": 13
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:106",
+      "data": {
+        "event": "attack_done",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 5,
+        "message": "Trojan 完成",
+        "log": "[Trojan] 完成",
+        "details": {
+          "attack": "Trojan",
+          "status": "success"
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:106",
+      "data": {
+        "event": "attack_start",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 6,
+        "message": "开始 FeatureCollision",
+        "log": "[FeatureCollision] 启动",
+        "details": {
+          "attack": "FeatureCollision",
+          "index": 3,
+          "total": 13
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:108",
+      "data": {
+        "event": "attack_done",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 6,
+        "message": "FeatureCollision 完成",
+        "log": "[FeatureCollision] 完成",
+        "details": {
+          "attack": "FeatureCollision",
+          "status": "success"
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:108",
+      "data": {
+        "event": "attack_start",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 7,
+        "message": "开始 Triggerless",
+        "log": "[Triggerless] 启动",
+        "details": {
+          "attack": "Triggerless",
+          "index": 4,
+          "total": 13
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:110",
+      "data": {
+        "event": "attack_done",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 7,
+        "message": "Triggerless 完成",
+        "log": "[Triggerless] 完成",
+        "details": {
+          "attack": "Triggerless",
+          "status": "success"
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:110",
+      "data": {
+        "event": "attack_start",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 8,
+        "message": "开始 DynamicBackdoor",
+        "log": "[DynamicBackdoor] 启动",
+        "details": {
+          "attack": "DynamicBackdoor",
+          "index": 5,
+          "total": 13
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:111",
+      "data": {
+        "event": "attack_done",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 8,
+        "message": "DynamicBackdoor 完成",
+        "log": "[DynamicBackdoor] 完成",
+        "details": {
+          "attack": "DynamicBackdoor",
+          "status": "success"
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:111",
+      "data": {
+        "event": "attack_start",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 9,
+        "message": "开始 PhysicalBackdoor",
+        "log": "[PhysicalBackdoor] 启动",
+        "details": {
+          "attack": "PhysicalBackdoor",
+          "index": 6,
+          "total": 13
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:113",
+      "data": {
+        "event": "attack_done",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 9,
+        "message": "PhysicalBackdoor 完成",
+        "log": "[PhysicalBackdoor] 完成",
+        "details": {
+          "attack": "PhysicalBackdoor",
+          "status": "success"
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:113",
+      "data": {
+        "event": "attack_start",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 10,
+        "message": "开始 NeuronInterference",
+        "log": "[NeuronInterference] 启动",
+        "details": {
+          "attack": "NeuronInterference",
+          "index": 7,
+          "total": 13
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:114",
+      "data": {
+        "event": "attack_done",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 10,
+        "message": "NeuronInterference 完成",
+        "log": "[NeuronInterference] 完成",
+        "details": {
+          "attack": "NeuronInterference",
+          "status": "success"
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:114",
+      "data": {
+        "event": "attack_start",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 11,
+        "message": "开始 ModelPoisoning",
+        "log": "[ModelPoisoning] 启动",
+        "details": {
+          "attack": "ModelPoisoning",
+          "index": 8,
+          "total": 13
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:116",
+      "data": {
+        "event": "attack_done",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 11,
+        "message": "ModelPoisoning 完成",
+        "log": "[ModelPoisoning] 完成",
+        "details": {
+          "attack": "ModelPoisoning",
+          "status": "success"
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:116",
+      "data": {
+        "event": "attack_start",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 12,
+        "message": "开始 FGSM",
+        "log": "[FGSM] 启动",
+        "details": {
+          "attack": "FGSM",
+          "index": 9,
+          "total": 13
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:117",
+      "data": {
+        "event": "attack_done",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 12,
+        "message": "FGSM 完成",
+        "log": "[FGSM] 完成",
+        "details": {
+          "attack": "FGSM",
+          "status": "success"
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:117",
+      "data": {
+        "event": "attack_start",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 13,
+        "message": "开始 PGD",
+        "log": "[PGD] 启动",
+        "details": {
+          "attack": "PGD",
+          "index": 10,
+          "total": 13
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:119",
+      "data": {
+        "event": "attack_done",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 13,
+        "message": "PGD 完成",
+        "log": "[PGD] 完成",
+        "details": {
+          "attack": "PGD",
+          "status": "success"
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:119",
+      "data": {
+        "event": "attack_start",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 14,
+        "message": "开始 Optimization",
+        "log": "[Optimization] 启动",
+        "details": {
+          "attack": "Optimization",
+          "index": 11,
+          "total": 13
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:120",
+      "data": {
+        "event": "attack_done",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 14,
+        "message": "Optimization 完成",
+        "log": "[Optimization] 完成",
+        "details": {
+          "attack": "Optimization",
+          "status": "success"
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:120",
+      "data": {
+        "event": "attack_start",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 15,
+        "message": "开始 MI-FGSM",
+        "log": "[MI-FGSM] 启动",
+        "details": {
+          "attack": "MI-FGSM",
+          "index": 12,
+          "total": 13
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:122",
+      "data": {
+        "event": "attack_done",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 15,
+        "message": "MI-FGSM 完成",
+        "log": "[MI-FGSM] 完成",
+        "details": {
+          "attack": "MI-FGSM",
+          "status": "success"
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:122",
+      "data": {
+        "event": "attack_start",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 16,
+        "message": "开始 BackdoorPoison",
+        "log": "[BackdoorPoison] 启动",
+        "details": {
+          "attack": "BackdoorPoison",
+          "index": 13,
+          "total": 13
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:123",
+      "data": {
+        "event": "attack_done",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 16,
+        "message": "BackdoorPoison 完成",
+        "log": "[BackdoorPoison] 完成",
+        "details": {
+          "attack": "BackdoorPoison",
+          "status": "success"
+        }
+      }
+    },
+    {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:123",
+      "data": {
+        "event": "final_result",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 100,
+        "message": "批量攻击测试完成",
+        "log": "[100%] 所有攻击任务结束",
+        "details": {
+          "summary": [
+            {
+              "attack": "BadNets",
+              "status": "success"
+            },
+            {
+              "attack": "Trojan",
+              "status": "success"
+            },
+            {
+              "attack": "FeatureCollision",
+              "status": "success"
+            },
+            {
+              "attack": "Triggerless",
+              "status": "success"
+            },
+            {
+              "attack": "DynamicBackdoor",
+              "status": "success"
+            },
+            {
+              "attack": "PhysicalBackdoor",
+              "status": "success"
+            },
+            {
+              "attack": "NeuronInterference",
+              "status": "success"
+            },
+            {
+              "attack": "ModelPoisoning",
+              "status": "success"
+            },
+            {
+              "attack": "FGSM",
+              "status": "success"
+            },
+            {
+              "attack": "PGD",
+              "status": "success"
+            },
+            {
+              "attack": "Optimization",
+              "status": "success"
+            },
+            {
+              "attack": "MI-FGSM",
+              "status": "success"
+            },
+            {
+              "attack": "BackdoorPoison",
+              "status": "success"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "summary": {
+    "final_event": {
+      "resp_code": 0,
+      "resp_msg": "ok",
+      "time_stamp": "2025/12/26-11:21:09:123",
+      "data": {
+        "event": "final_result",
+        "callback_params": {
+          "task_run_id": "task_run_id_default",
+          "method_type": "数据投毒",
+          "algorithm_type": "BadNets",
+          "task_type": "投毒攻击执行",
+          "task_name": "BadNets数据投毒攻击",
+          "parent_task_id": "parent_task_default",
+          "user_name": "nudt_user"
+        },
+        "progress": 100,
+        "message": "批量攻击测试完成",
+        "log": "[100%] 所有攻击任务结束",
+        "details": {
+          "summary": [
+            {
+              "attack": "BadNets",
+              "status": "success"
+            },
+            {
+              "attack": "Trojan",
+              "status": "success"
+            },
+            {
+              "attack": "FeatureCollision",
+              "status": "success"
+            },
+            {
+              "attack": "Triggerless",
+              "status": "success"
+            },
+            {
+              "attack": "DynamicBackdoor",
+              "status": "success"
+            },
+            {
+              "attack": "PhysicalBackdoor",
+              "status": "success"
+            },
+            {
+              "attack": "NeuronInterference",
+              "status": "success"
+            },
+            {
+              "attack": "ModelPoisoning",
+              "status": "success"
+            },
+            {
+              "attack": "FGSM",
+              "status": "success"
+            },
+            {
+              "attack": "PGD",
+              "status": "success"
+            },
+            {
+              "attack": "Optimization",
+              "status": "success"
+            },
+            {
+              "attack": "MI-FGSM",
+              "status": "success"
+            },
+            {
+              "attack": "BackdoorPoison",
+              "status": "success"
+            }
+          ]
+        }
+      }
+    }
+  }
+}
