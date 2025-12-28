@@ -330,14 +330,34 @@ def run_attack_simulation(attack_name: str, json_dir: str, output_dir: str, inpu
 
             # Step 5: Evaluation (90%)
             stealth = max(0.1, chars["stealth"] - (trigger_size * 0.05) - (poison_rate * 0.2))
+            eval_details = {
+                "final_asr": asr, 
+                "final_acc": acc, 
+                "accuracy_drop": round(0.90 - acc, 4), 
+                "stealth_score": round(stealth, 2),
+                "asr_trend": "increasing",
+                "loss_trend": "decreasing",
+                "attack_robustness": "High" if asr > 0.8 else "Medium"
+            }
             sse_envelope("evaluation_metrics", 90, "攻击效能量化评估完成", log=f"[90%] 评估结果 - 成功率: {asr:.2%}, 稳健性得分: {stealth:.2f}",
-                         details={"final_asr": asr, "final_acc": acc, "accuracy_drop": round(0.90 - acc, 4), "stealth_score": round(stealth, 2)}, callback_params=cb)
+                         details=eval_details, callback_params=cb)
             
             emit_stepped_progress(90, 100, "指标评估", "生成报告", cb, num_steps=2)
 
             # Step 6: Final (100%)
+            final_details = {
+                "clean_accuracy": acc, 
+                "backdoor_success_rate": asr, 
+                "is_final": True,
+                "metrics": eval_details,
+                "execution_summary": {
+                    "total_epochs": epochs,
+                    "poisoning_ratio": poison_rate,
+                    "target_label": target_label
+                }
+            }
             final_payload = sse_envelope("final_result", 100, f"{attack_name} 任务处理完毕", log="[100%] 攻击评估任务已成功结束，详细分析报告已同步至输出目录。",
-                                         details={"clean_accuracy": acc, "backdoor_success_rate": asr, "is_final": True}, callback_params=cb)
+                                         details=final_details, callback_params=cb)
             
     finally:
         summary_writer.flush(extra={"final_event": final_payload})

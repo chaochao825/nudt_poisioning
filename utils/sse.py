@@ -79,6 +79,10 @@ def sse_print(event: str, data: Dict[str, Any]) -> str:
     First line: event: <event_name>
     Second line: data: <json_data>
     """
+    # Force event to be final_result if progress is 100
+    if data.get("progress") == 100 or data.get("progress") == 100.0:
+        event = "final_result"
+
     # Remove metadata if present (compatibility with old envelope callers)
     if "data" in data and isinstance(data["data"], dict) and "resp_code" in data:
         data_to_print = data["data"].copy()
@@ -89,6 +93,10 @@ def sse_print(event: str, data: Dict[str, Any]) -> str:
         # If event is in data, use it for the header but remove from JSON body
         if "event" in data_to_print:
             event = data_to_print.pop("event", event)
+
+    # Force event to be final_result if progress is 100 (again, to be sure)
+    if data_to_print.get("progress") == 100 or data_to_print.get("progress") == 100.0:
+        event = "final_result"
 
     # Ensure callback_params is clean and robust
     if "callback_params" in data_to_print:
@@ -103,10 +111,8 @@ def sse_print(event: str, data: Dict[str, Any]) -> str:
         data_to_print["callback_params"] = default_callback_params()
 
     # REMOVE empty details or other empty objects to keep output clean
-    keys_to_clean = ["details"]
-    for k in keys_to_clean:
-        if k in data_to_print and (data_to_print[k] is None or data_to_print[k] == {}):
-            del data_to_print[k]
+    if "details" in data_to_print and (data_to_print["details"] is None or data_to_print["details"] == {}):
+        del data_to_print["details"]
 
     json_str = json.dumps(data_to_print, ensure_ascii=False, default=_serialize)
     # The requirement is event on one line, data on the next, followed by a blank line

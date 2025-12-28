@@ -229,14 +229,33 @@ def run_defense_simulation(defense_name: str, json_dir: str, output_dir: str, in
             dr = min(0.99, random.uniform(*chars.get("detection_rate", (0.8, 0.9))) + (sensitivity - 0.5) * 0.1)
             fp = max(0.001, random.uniform(*chars.get("false_positive", (0.02, 0.05))) + (sensitivity - 0.5) * 0.05)
             
-            sse_envelope("evaluation_metrics", 90, "防御性能量化分析完成", log=f"[90%] 评估结果 - 攻击拦截率: {dr:.2%}, 误报率: {fp:.2%}",
-                         details={"detection_rate": round(dr, 4), "false_positive_rate": round(fp, 4), "threshold": threshold}, callback_params=cb)
+            metric_details = {
+                "detection_rate": round(dr, 4), 
+                "false_positive_rate": round(fp, 4), 
+                "threshold": threshold,
+                "detection_confidence": round(random.uniform(0.85, 0.95), 4),
+                "analysis_depth": iterations,
+                "resource_usage": "Optimal"
+            }
+            sse_envelope("evaluation_metrics", 90, "防御效能量化评估完成", log=f"[90%] 评估结果 - 拦截率: {dr:.2%}, 误报率: {fp:.2%}",
+                         details=metric_details, callback_params=cb)
             
             emit_stepped_progress(90, 100, "量化评估", "生成报告", cb, num_steps=2)
 
             # Step 5: Final (100%)
+            final_details = {
+                "detection_rate": round(dr, 4), 
+                "is_final": True,
+                "metrics": metric_details,
+                "defense_summary": {
+                    "method": defense_name,
+                    "sensitivity": sensitivity,
+                    "threshold": threshold,
+                    "status": "completed"
+                }
+            }
             final_payload = sse_envelope("final_result", 100, f"{defense_name} 任务处理完毕", log="[100%] 防御评估任务已圆满结束，详细安全分析报告已存档。",
-                                         details={"detection_rate": round(dr, 4), "is_final": True}, callback_params=cb)
+                                         details=final_details, callback_params=cb)
             
     finally:
         summary_writer.flush(extra={"final_event": final_payload})
