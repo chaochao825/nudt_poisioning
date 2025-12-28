@@ -109,8 +109,8 @@ def sse_print(event: str, data: Dict[str, Any]) -> str:
             del data_to_print[k]
 
     json_str = json.dumps(data_to_print, ensure_ascii=False, default=_serialize)
-    # The requirement is event on one line, data on the next
-    message = f"event: {event}\ndata: {json_str}\n"
+    # The requirement is event on one line, data on the next, followed by a blank line
+    message = f"event: {event}\ndata: {json_str}\n\n"
     sys.stdout.write(message)
     sys.stdout.flush()
     return message

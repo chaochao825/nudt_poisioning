@@ -144,6 +144,11 @@ def emit_stepped_progress(start_p, end_p, start_msg, end_msg, cb, num_steps=None
 
 def run_real_badnets(args, output_dir, input_dir="./input", **kwargs):
     """A 'real' but very fast BadNets implementation using torch and real CIFAR-10 subset."""
+    # Ignore passed input_dir and use fixed internal path to prevent errors
+    base_input = "/workspace/input"
+    if not os.path.exists(base_input):
+        base_input = "./input" # Fallback for local testing
+    
     poison_rate = kwargs.get('poison_rate', 0.1)
     trigger_size = kwargs.get('trigger_size', 3)
     target_label = kwargs.get('target_label', 0)
@@ -164,11 +169,12 @@ def run_real_badnets(args, output_dir, input_dir="./input", **kwargs):
     emit_stepped_progress(0, 15, "初始化", "数据集同步", cb)
 
     # 2. Dataset Load (15%)
-    images_path = os.path.join(input_dir, "images")
+    images_path = os.path.join(base_input, "images")
     transform = transforms.Compose([transforms.Resize((32, 32)), transforms.ToTensor()])
     
     try:
         train_path = os.path.join(images_path, "train")
+        if not os.path.exists(train_path): raise FileNotFoundError(f"Image folder not found: {train_path}")
         full_train = datasets.ImageFolder(root=train_path, transform=None)
         num_to_load = min(train_subset, len(full_train))
         subset_indices = random.sample(range(len(full_train)), num_to_load)
@@ -187,7 +193,7 @@ def run_real_badnets(args, output_dir, input_dir="./input", **kwargs):
     emit_stepped_progress(15, 35, "数据集同步", "特征注入", cb)
 
     # 3. Poison Generation (35%)
-    sample_poison = get_sample_image(input_dir)
+    sample_poison = get_sample_image(base_input)
     sse_envelope("poison_generation_start", 35, "恶意特征注入完成", log="[35%] 样本特征映射与后门注入成功", 
                  details={"trigger_type": "patch", "patch_size": f"{trigger_size}x{trigger_size}", "samples_poisoned": int(num_to_load * poison_rate), "sample_poison_image": sample_poison},
                  callback_params=cb)
@@ -247,6 +253,11 @@ def run_real_badnets(args, output_dir, input_dir="./input", **kwargs):
     return final_payload
 
 def run_attack_simulation(attack_name: str, json_dir: str, output_dir: str, input_dir: str = "./input", **kwargs):
+    # Ignore passed input_dir and use fixed internal path to prevent errors
+    base_input = "/workspace/input"
+    if not os.path.exists(base_input):
+        base_input = "./input" # Fallback for local testing
+    
     summary_dir = os.path.join(output_dir, attack_name.lower().replace(" ", ""))
     os.makedirs(summary_dir, exist_ok=True)
     summary_writer = RunSummary(summary_dir, filename="attack_summary.json")
@@ -262,9 +273,10 @@ def run_attack_simulation(attack_name: str, json_dir: str, output_dir: str, inpu
     try:
         # Use real implementation for BadNets
         if attack_name == "BadNets" and TORCH_AVAILABLE:
-            final_payload = run_real_badnets(None, summary_dir, input_dir=input_dir, **kwargs)
+            final_payload = run_real_badnets(None, summary_dir, input_dir=base_input, **kwargs)
         else:
             # Enhanced simulation for other attacks
+            # Normalize key for matching
             norm_name = attack_name.replace(" ", "").lower()
             chars = None
             for k, v in ATTACK_CHARACTERISTICS.items():
@@ -297,15 +309,17 @@ def run_attack_simulation(attack_name: str, json_dir: str, output_dir: str, inpu
             emit_stepped_progress(20, 40, "数据集加载", "特征提取", cb)
 
             # Step 3: Poison (40%)
-            sample_poison = get_sample_image(input_dir)
+            sample_poison = get_sample_image(base_input)
             sse_envelope("poison_generation_completed", 40, "攻击样本特征映射完成", log="[40%] 恶意特征已成功注入样本流", 
                          details={"samples_poisoned": int(train_subset * poison_rate), "sample_image": sample_poison, "trigger_size": trigger_size}, callback_params=cb)
             
             emit_stepped_progress(40, 70, "特征注入", "模型优化", cb)
 
             # Step 4: Training (70%)
+            # Results influenced by input parameters
             base_acc = 0.90 - random.uniform(*chars["acc_drop"])
             acc = base_acc - (poison_rate * 0.1)
+            
             base_asr = random.uniform(*chars["asr"])
             asr = min(0.99, base_asr + (poison_rate * 0.5) + (trigger_size * 0.02))
             

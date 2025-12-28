@@ -74,6 +74,11 @@ def emit_stepped_progress(start_p, end_p, start_msg, end_msg, cb, num_steps=None
 
 def run_real_strip(output_dir, input_dir="./input", **kwargs):
     """A 'real' STRIP simulator that actually computes entropy on dummy tensor data."""
+    # Ignore passed input_dir and use fixed internal path
+    base_input = "/workspace/input"
+    if not os.path.exists(base_input):
+        base_input = "./input"
+
     sensitivity = kwargs.get('sensitivity', 0.5)
     threshold = kwargs.get('threshold', 0.5)
     test_subset = kwargs.get('test_subset', 50)
@@ -103,7 +108,7 @@ def run_real_strip(output_dir, input_dir="./input", **kwargs):
     
     # 4. Image Testing (40% - 80%)
     num_samples = test_subset
-    images_path = os.path.join(input_dir, "images")
+    images_path = os.path.join(base_input, "images")
     
     try:
         from torchvision import datasets, transforms
@@ -148,7 +153,7 @@ def run_real_strip(output_dir, input_dir="./input", **kwargs):
                  callback_params=cb)
 
     # 5. Analysis & Final (90% - 100%)
-    sample_img = get_sample_image(input_dir, "test")
+    sample_img = get_sample_image(base_input, "test")
     sse_envelope("defense_comparison_analysis", 90, "生成安全性审计报告", log="[90%] 正在量化特征分布差异...",
                  details={"sample_detected_image": sample_img}, callback_params=cb)
     
@@ -162,6 +167,11 @@ def run_real_strip(output_dir, input_dir="./input", **kwargs):
     return final_payload
 
 def run_defense_simulation(defense_name: str, json_dir: str, output_dir: str, input_dir: str = "./input", **kwargs):
+    # Ignore passed input_dir and use fixed internal path
+    base_input = "/workspace/input"
+    if not os.path.exists(base_input):
+        base_input = "./input"
+
     summary_dir = os.path.join(output_dir, f"defense_{defense_name.lower().replace(' ', '')}")
     os.makedirs(summary_dir, exist_ok=True)
     summary_writer = RunSummary(summary_dir, filename="defense_summary.json")
@@ -175,7 +185,7 @@ def run_defense_simulation(defense_name: str, json_dir: str, output_dir: str, in
     final_payload = None
     try:
         if defense_name == "STRIP" and TORCH_AVAILABLE:
-            final_payload = run_real_strip(summary_dir, input_dir=input_dir, **kwargs)
+            final_payload = run_real_strip(summary_dir, input_dir=base_input, **kwargs)
         else:
             # Enhanced simulation for other defenses
             norm_name = defense_name.replace(" ", "").lower()
