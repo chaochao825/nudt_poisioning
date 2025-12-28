@@ -81,7 +81,7 @@ def run_real_strip(output_dir, input_dir="./input", **kwargs):
 
     sensitivity = kwargs.get('sensitivity', 0.5)
     threshold = kwargs.get('threshold', 0.5)
-    test_subset = kwargs.get('test_subset', 50)
+    test_subset = kwargs.get('test_subset', 100)
     
     session_id = f"defense_session_strip_{int(time.time())}"
     cb = default_callback_params()
@@ -89,7 +89,8 @@ def run_real_strip(output_dir, input_dir="./input", **kwargs):
     
     # 1. Start (0%)
     sse_envelope("process_start", 0, "启动 STRIP 防御分析任务", log="[0%] 正在初始化安全监测环境...", 
-                 details={"defense_method": "STRIP", "defense_mode": "实时流检测", "session_id": session_id},
+                 details={"defense_method": "STRIP", "defense_mode": "实时流检测", "session_id": session_id,
+                          "parameters": {"sensitivity": sensitivity, "threshold": threshold, "test_samples": test_subset}},
                  callback_params=cb)
     
     emit_stepped_progress(0, 15, "初始化", "环境配置", cb)
@@ -137,7 +138,7 @@ def run_real_strip(output_dir, input_dir="./input", **kwargs):
         entropy = -torch.sum(probs * torch.log(probs + 1e-6)).item()
         entropies.append(entropy)
         
-        if (i+1) % 10 == 0:
+        if (i+1) % max(1, num_samples // 5) == 0:
             progress = 40 + int((i+1)/num_samples * 40)
             sse_envelope("clean_sample_testing", progress, f"样本审计进度: {i+1}/{num_samples}", 
                          log=f"[{progress}%] 实时特征空间扫描中... ({i+1}/{num_samples})", details={"processed": i+1, "total": num_samples},
@@ -160,9 +161,11 @@ def run_real_strip(output_dir, input_dir="./input", **kwargs):
     emit_stepped_progress(90, 100, "报告生成", "同步存储", cb, num_steps=2)
 
     detection_rate = detected / max(1, (num_samples // 5))
-    final_payload = sse_envelope("poison_defense_completed", 100, "防御任务执行完毕", 
+    final_payload = sse_envelope("final_result", 100, "防御任务执行完毕", 
                                  log=f"[100%] 任务成功。检出异常流量: {detected}，告警率: {detection_rate:.2%}",
-                                 details={"defense_session_id": session_id, "final_results": {"clean_acc": 0.92, "detection_rate": round(detection_rate, 4), "inference_overhead": "12.5%"}},
+                                 details={"defense_session_id": session_id, "is_final": True,
+                                          "final_results": {"clean_acc": 0.92, "detection_rate": round(detection_rate, 4), "inference_overhead": "12.5%"},
+                                          "parameters": {"sensitivity": sensitivity, "threshold": threshold, "test_samples": num_samples}},
                                  callback_params=cb)
     return final_payload
 
@@ -180,7 +183,7 @@ def run_defense_simulation(defense_name: str, json_dir: str, output_dir: str, in
     sensitivity = kwargs.get('sensitivity', 0.5)
     threshold = kwargs.get('threshold', 0.5)
     iterations = kwargs.get('iterations', 100)
-    train_subset = kwargs.get('train_subset', 1000)
+    train_subset = kwargs.get('train_subset', 500)
 
     final_payload = None
     try:
@@ -208,8 +211,9 @@ def run_defense_simulation(defense_name: str, json_dir: str, output_dir: str, in
             })
             
             # Step 1: Start (0%)
-            sse_envelope("process_start", 0, f"启动 {defense_name} 评估任务执行", log=f"[0%] 正在初始化 {chars['type']} 环境...", 
-                         details={"defense_method": defense_name, "category": chars["type"], "session_id": session_id}, callback_params=cb)
+            sse_envelope("process_start", 0, f"启动 {defense_name} 评估任务", log=f"[0%] 正在初始化 {chars['type']} 环境...", 
+                         details={"defense_method": defense_name, "category": chars["type"], "session_id": session_id,
+                                  "parameters": {"sensitivity": sensitivity, "threshold": threshold, "iterations": iterations, "train_subset": train_subset}}, callback_params=cb)
             
             emit_stepped_progress(0, 30, "环境初始化", "数据集同步", cb)
 
@@ -229,33 +233,15 @@ def run_defense_simulation(defense_name: str, json_dir: str, output_dir: str, in
             dr = min(0.99, random.uniform(*chars.get("detection_rate", (0.8, 0.9))) + (sensitivity - 0.5) * 0.1)
             fp = max(0.001, random.uniform(*chars.get("false_positive", (0.02, 0.05))) + (sensitivity - 0.5) * 0.05)
             
-            metric_details = {
-                "detection_rate": round(dr, 4), 
-                "false_positive_rate": round(fp, 4), 
-                "threshold": threshold,
-                "detection_confidence": round(random.uniform(0.85, 0.95), 4),
-                "analysis_depth": iterations,
-                "resource_usage": "Optimal"
-            }
-            sse_envelope("evaluation_metrics", 90, "防御效能量化评估完成", log=f"[90%] 评估结果 - 拦截率: {dr:.2%}, 误报率: {fp:.2%}",
-                         details=metric_details, callback_params=cb)
+            sse_envelope("evaluation_metrics", 90, "防御性能量化分析完成", log=f"[90%] 评估结果 - 攻击拦截率: {dr:.2%}, 误报率: {fp:.2%}",
+                         details={"detection_rate": round(dr, 4), "false_positive_rate": round(fp, 4), "threshold": threshold}, callback_params=cb)
             
             emit_stepped_progress(90, 100, "量化评估", "生成报告", cb, num_steps=2)
 
             # Step 5: Final (100%)
-            final_details = {
-                "detection_rate": round(dr, 4), 
-                "is_final": True,
-                "metrics": metric_details,
-                "defense_summary": {
-                    "method": defense_name,
-                    "sensitivity": sensitivity,
-                    "threshold": threshold,
-                    "status": "completed"
-                }
-            }
             final_payload = sse_envelope("final_result", 100, f"{defense_name} 任务处理完毕", log="[100%] 防御评估任务已圆满结束，详细安全分析报告已存档。",
-                                         details=final_details, callback_params=cb)
+                                         details={"detection_rate": round(dr, 4), "is_final": True,
+                                                  "parameters": {"sensitivity": sensitivity, "threshold": threshold, "iterations": iterations, "train_subset": train_subset}}, callback_params=cb)
             
     finally:
         summary_writer.flush(extra={"final_event": final_payload})
@@ -268,8 +254,8 @@ def main():
     parser.add_argument("--json_dir", type=str, default="./json_file")
     parser.add_argument("--output_path", type=str, default="./output")
     parser.add_argument("--input_path", type=str, default="./input")
-    parser.add_argument("--train_subset", type=int, default=1000)
-    parser.add_argument("--test_subset", type=int, default=50)
+    parser.add_argument("--train_subset", type=int, default=500)
+    parser.add_argument("--test_subset", type=int, default=100)
     parser.add_argument("--sensitivity", type=float, default=0.5)
     parser.add_argument("--threshold", type=float, default=0.5)
     parser.add_argument("--iterations", type=int, default=100)

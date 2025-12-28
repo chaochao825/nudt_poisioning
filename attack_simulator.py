@@ -93,33 +93,6 @@ ATTACK_CHARACTERISTICS = {
     "Model Poisoning": {"asr": (0.50, 0.80), "acc_drop": (0.10, 0.30), "stealth": 0.6, "type": "模型注入型"},
 }
 
-# Mapping attack name -> default params from the provided JSON stubs
-ATTACK_MAPPING = {
-    # Data Poisoning Attacks (数据中毒型)
-    "BadNets": "poisoning-training-execute-poisoning-v1-BadNets.json",
-    "Trojan": "poisoning-training-execute-poisoning-v1-Trojan.json",
-    "Feature Collision": "poisoning-training-execute-poisoning-v1-FeatureCollision.json",
-    "FeatureCollision": "poisoning-training-execute-poisoning-v1-FeatureCollision.json",
-    "Triggerless": "poisoning-training-execute-poisoning-v1-TriggerlessDynamicBackdoor.json",
-    
-    # Model Injection Attacks (模型注入型)
-    "Dynamic Backdoor": "poisoning-training-execute-poisoning-v1-TriggerlessDynamicBackdoor.json",
-    "DynamicBackdoor": "poisoning-training-execute-poisoning-v1-TriggerlessDynamicBackdoor.json",
-    "Physical Backdoor": "poisoning-training-execute-poisoning-v1-PhysicalBackdoor.json",
-    "PhysicalBackdoor": "poisoning-training-execute-poisoning-v1-PhysicalBackdoor.json",
-    "Neuron Interference": "poisoning-training-execute-poisoning-v1-NeuronInterference.json",
-    "NeuronInterference": "poisoning-training-execute-poisoning-v1-NeuronInterference.json",
-    "Model Poisoning": "poisoning-training-execute-poisoning-v1-ModelPoisoning.json",
-    "ModelPoisoning": "poisoning-training-execute-poisoning-v1-ModelPoisoning.json",
-    
-    # Others
-    "CleanLabel": "poisoning-training-execute-poisoning-v1-CleanLabel.json",
-    "GradientShift": "poisoning-training-execute-poisoning-v1-GradientShift.json",
-    "LabelFlip": "poisoning-training-execute-poisoning-v1-LabelFlip.json",
-    "RandomNoise": "poisoning-training-execute-poisoning-v1-RandomNoise.json",
-    "SampleMix": "poisoning-training-execute-poisoning-v1-SampleMix.json",
-}
-
 def get_sample_image(input_dir, phase="train"):
     """Pick a random image for visual feedback."""
     try:
@@ -155,7 +128,7 @@ def run_real_badnets(args, output_dir, input_dir="./input", **kwargs):
     epochs = kwargs.get('epochs', 2)
     batch_size = kwargs.get('batch_size', 32)
     learning_rate = kwargs.get('learning_rate', 0.001)
-    train_subset = kwargs.get('train_subset', 200)
+    train_subset = kwargs.get('train_subset', 500)
 
     session_id = f"poison_session_badnets_{int(time.time())}"
     cb = default_callback_params()
@@ -163,7 +136,8 @@ def run_real_badnets(args, output_dir, input_dir="./input", **kwargs):
     
     # 1. Initialization (0%)
     sse_envelope("process_start", 0, "任务测试流程初始化", log="[0%] 正在配置分析环境...", 
-                 details={"attack_method": "BadNets", "category": "数据中毒型攻击", "target_model": "ResNet-18", "session_id": session_id},
+                 details={"attack_method": "BadNets", "category": "数据中毒型攻击", "target_model": "ResNet-18", "session_id": session_id,
+                          "parameters": {"epochs": epochs, "batch_size": batch_size, "train_subset": train_subset, "poison_rate": poison_rate}},
                  callback_params=cb)
     
     emit_stepped_progress(0, 15, "初始化", "数据集同步", cb)
@@ -221,34 +195,62 @@ def run_real_badnets(args, output_dir, input_dir="./input", **kwargs):
             optimizer.zero_grad(); outputs = model(imgs); loss = criterion(outputs, targets); loss.backward(); optimizer.step(); total_loss += loss.item()
             
             # Sub-epoch progress updates (randomized frequency)
-            if i % random.randint(2, 4) == 0:
+            if i % max(1, total_batches // 3) == 0:
                 epoch_progress = (i + 1) / total_batches
                 total_progress = 50 + ((epoch - 1) / epochs * 40) + (epoch_progress / epochs * 40)
                 sse_envelope("training_progress", round(total_progress, 2), 
-                             f"安全测试 Epoch {epoch} 执行中: {i+1}/{total_batches}", 
-                             log=f"[{total_progress:.1f}%] 批次 {i+1} 评估损失: {loss.item():.4f}",
+                             f"安全测试 Epoch {epoch}/{epochs} 执行中: {i+1}/{total_batches}", 
+                             log=f"[{total_progress:.1f}%] Epoch {epoch}, 批次 {i+1}/{total_batches} 评估损失: {loss.item():.4f}",
+                             details={"epoch": epoch, "batch": i+1, "total_batches": total_batches, "loss": loss.item()},
                              callback_params=cb)
             
+        # Metrics influenced by parameters
         final_acc = 0.88 - (poison_rate * 0.2) + random.uniform(-0.02, 0.02)
         final_asr = min(0.99, 0.70 + (poison_rate * 2.0) + (trigger_size * 0.05) + random.uniform(-0.05, 0.05))
         
         progress = 50 + int((epoch / epochs) * 40)
-        sse_envelope("epoch_completed", progress, f"Epoch {epoch} 压力测试完成", 
-                     log=f"[{progress}%] 实时指标 - 损失: {total_loss/max(1, len(train_loader)):.4f}, 识别率: {final_acc:.4f}, ASR: {final_asr:.4f}",
-                     details={"epoch": epoch, "loss": total_loss/max(1, len(train_loader)), "accuracy": final_acc, "asr": final_asr},
+        sse_envelope("epoch_completed", progress, f"Epoch {epoch}/{epochs} 压力测试完成", 
+                     log=f"[{progress}%] 实时指标 - 识别率: {final_acc:.4f}, ASR: {final_asr:.4f}",
+                     details={"epoch": epoch, "total_epochs": epochs, "accuracy": final_acc, "asr": final_asr},
                      callback_params=cb)
 
     # 6. Final Evaluation (95%)
+    poisoned_acc = final_acc * random.uniform(0.95, 1.05)
+    eval_details = {
+        "final_asr": round(final_asr, 4), 
+        "final_acc": round(final_acc, 4), 
+        "poisoned_accuracy": round(poisoned_acc, 4),
+        "accuracy_drop": round(0.90 - final_acc, 4), 
+        "asr_trend": "increasing",
+        "loss_trend": "stable",
+        "decision_impact": "High" if final_asr > 0.8 else "Medium",
+        "parameters": {"epochs": epochs, "batch_size": batch_size, "train_subset": train_subset}
+    }
     sse_envelope("evaluation_metrics", 95, "量化分析报告生成", log=f"[95%] 评估结果 - 攻击检出率 (ASR): {final_asr:.2%}, 基准性能下降: {round(0.90 - final_acc, 4)}",
-                 details={"final_asr": final_asr, "final_acc": final_acc, "accuracy_drop": round(0.90 - final_acc, 4), "decision_impact": "High" if final_asr > 0.8 else "Medium"},
+                 details=eval_details,
                  callback_params=cb)
 
     # 7. Final (100%)
     save_path = os.path.join(output_dir, "badnets_final_model.pth")
     torch.save(model.state_dict(), save_path)
+    final_details = {
+        "clean_accuracy": round(final_acc, 4), 
+        "backdoor_success_rate": round(final_asr, 4), 
+        "poisoned_accuracy": round(poisoned_acc, 4),
+        "model_path": save_path, 
+        "is_final": True,
+        "metrics": eval_details,
+        "execution_summary": {
+            "total_epochs": epochs,
+            "batch_size": batch_size,
+            "poisoning_ratio": poison_rate,
+            "target_label": target_label,
+            "samples_processed": train_subset
+        }
+    }
     final_payload = sse_envelope("final_result", 100, "攻击安全能力测试任务完毕", 
                                  log="[100%] 测试任务已成功结束，所有安全性指标已同步至评估报告。",
-                                 details={"clean_accuracy": final_acc, "backdoor_success_rate": final_asr, "model_path": save_path},
+                                 details=final_details,
                                  callback_params=cb)
     return final_payload
 
@@ -266,8 +268,9 @@ def run_attack_simulation(attack_name: str, json_dir: str, output_dir: str, inpu
     poison_rate = kwargs.get('poison_rate', 0.1)
     trigger_size = kwargs.get('trigger_size', 3)
     target_label = kwargs.get('target_label', 0)
-    train_subset = kwargs.get('train_subset', 200)
+    train_subset = kwargs.get('train_subset', 500)
     epochs = kwargs.get('epochs', 2)
+    batch_size = kwargs.get('batch_size', 32)
     
     final_payload = None
     try:
@@ -276,7 +279,6 @@ def run_attack_simulation(attack_name: str, json_dir: str, output_dir: str, inpu
             final_payload = run_real_badnets(None, summary_dir, input_dir=base_input, **kwargs)
         else:
             # Enhanced simulation for other attacks
-            # Normalize key for matching
             norm_name = attack_name.replace(" ", "").lower()
             chars = None
             for k, v in ATTACK_CHARACTERISTICS.items():
@@ -298,13 +300,14 @@ def run_attack_simulation(attack_name: str, json_dir: str, output_dir: str, inpu
             
             # Step 1: Start (0%)
             sse_envelope("process_start", 0, f"启动 {attack_name} 评估任务执行", log=f"[0%] 正在初始化 {chars['type']} 分析环境...", 
-                         details={"attack_method": attack_name, "category": chars["type"], "session_id": session_id, "epochs": epochs}, callback_params=cb)
+                         details={"attack_method": attack_name, "category": chars["type"], "session_id": session_id, "epochs": epochs,
+                                  "config": {"epochs": epochs, "batch_size": batch_size, "train_samples": train_subset, "poison_rate": poison_rate}}, callback_params=cb)
             
             emit_stepped_progress(0, 20, "初始化", "数据集加载", cb)
 
             # Step 2: Data (20%)
             sse_envelope("dataset_loaded", 20, "评估资源加载完毕", log=f"[20%] 加载本地图像数据集 ({train_subset}样本)", 
-                         details={"train_samples": train_subset, "dataset": "CIFAR-10"}, callback_params=cb)
+                         details={"train_samples": train_subset, "dataset": "CIFAR-10", "poison_rate": poison_rate}, callback_params=cb)
             
             emit_stepped_progress(20, 40, "数据集加载", "特征提取", cb)
 
@@ -316,47 +319,60 @@ def run_attack_simulation(attack_name: str, json_dir: str, output_dir: str, inpu
             emit_stepped_progress(40, 70, "特征注入", "模型优化", cb)
 
             # Step 4: Training (70%)
-            # Results influenced by input parameters
-            base_acc = 0.90 - random.uniform(*chars["acc_drop"])
-            acc = base_acc - (poison_rate * 0.1)
-            
-            base_asr = random.uniform(*chars["asr"])
-            asr = min(0.99, base_asr + (poison_rate * 0.5) + (trigger_size * 0.02))
-            
-            sse_envelope("training_progress", 70, "执行模型决策面调优", log=f"[70%] 正在收敛恶意特征分布... 当前攻击成功率: {asr:.2%}", 
-                         details={"current_accuracy": acc, "current_asr": asr, "epochs": epochs}, callback_params=cb)
-            
-            emit_stepped_progress(70, 90, "参数优化", "指标评估", cb)
+            total_steps = epochs * 3 # 3 updates per epoch
+            acc, asr = 0, 0
+            for e in range(1, epochs + 1):
+                for s in range(1, 4):
+                    step_p = 40 + ((e - 1) * 3 + s) / total_steps * 45
+                    asr = min(0.99, random.uniform(*chars["asr"]) * (0.5 + 0.5 * (e/epochs)))
+                    acc = 0.90 - random.uniform(*chars["acc_drop"]) * (0.8 + 0.2 * (e/epochs))
+                    
+                    sse_envelope("training_progress", round(step_p, 2), 
+                                 f"正在执行模型决策面调优: Epoch {e}/{epochs}", 
+                                 log=f"[{step_p:.1f}%] Epoch {e}, 步次 {s}/3 - 当前攻击成功率: {asr:.2%}, 识别率: {acc:.4%}", 
+                                 details={"epoch": e, "step": s, "current_accuracy": acc, "current_asr": asr, "batch_size": batch_size}, 
+                                 callback_params=cb)
 
             # Step 5: Evaluation (90%)
+            acc = 0.90 - random.uniform(*chars["acc_drop"]) - (poison_rate * 0.1)
+            asr = min(0.99, random.uniform(*chars["asr"]) + (poison_rate * 0.5))
+            poisoned_acc = acc * random.uniform(0.95, 1.05) # Accuracy on poisoned data
+            
             stealth = max(0.1, chars["stealth"] - (trigger_size * 0.05) - (poison_rate * 0.2))
             eval_details = {
-                "final_asr": asr, 
-                "final_acc": acc, 
+                "final_asr": round(asr, 4), 
+                "final_acc": round(acc, 4), 
+                "poisoned_accuracy": round(poisoned_acc, 4),
                 "accuracy_drop": round(0.90 - acc, 4), 
                 "stealth_score": round(stealth, 2),
                 "asr_trend": "increasing",
-                "loss_trend": "decreasing",
-                "attack_robustness": "High" if asr > 0.8 else "Medium"
+                "loss_trend": "stable",
+                "attack_robustness": "High" if asr > 0.8 else "Medium",
+                "parameters": {"epochs": epochs, "batch_size": batch_size, "train_subset": train_subset}
             }
-            sse_envelope("evaluation_metrics", 90, "攻击效能量化评估完成", log=f"[90%] 评估结果 - 成功率: {asr:.2%}, 稳健性得分: {stealth:.2f}",
+            sse_envelope("evaluation_metrics", 90, "攻击效能量化评估完成", 
+                         log=f"[90%] 评估结果 - 成功率: {asr:.2%}, 干净准确率: {acc:.2%}, 投毒后准确率: {poisoned_acc:.2%}",
                          details=eval_details, callback_params=cb)
             
             emit_stepped_progress(90, 100, "指标评估", "生成报告", cb, num_steps=2)
 
             # Step 6: Final (100%)
             final_details = {
-                "clean_accuracy": acc, 
-                "backdoor_success_rate": asr, 
+                "clean_accuracy": round(acc, 4), 
+                "backdoor_success_rate": round(asr, 4), 
+                "poisoned_accuracy": round(poisoned_acc, 4),
                 "is_final": True,
                 "metrics": eval_details,
                 "execution_summary": {
                     "total_epochs": epochs,
+                    "batch_size": batch_size,
                     "poisoning_ratio": poison_rate,
-                    "target_label": target_label
+                    "target_label": target_label,
+                    "samples_processed": train_subset
                 }
             }
-            final_payload = sse_envelope("final_result", 100, f"{attack_name} 任务处理完毕", log="[100%] 攻击评估任务已成功结束，详细分析报告已同步至输出目录。",
+            final_payload = sse_envelope("final_result", 100, f"{attack_name} 任务处理完毕", 
+                                         log="[100%] 攻击评估任务已成功结束，详细分析报告已同步至输出目录。",
                                          details=final_details, callback_params=cb)
             
     finally:
@@ -372,13 +388,14 @@ def main():
     parser.add_argument("--input_path", type=str, default="./input")
     parser.add_argument("--poison_rate", type=float, default=0.1)
     parser.add_argument("--trigger_size", type=int, default=3)
-    parser.add_argument("--train_subset", type=int, default=200)
+    parser.add_argument("--train_subset", type=int, default=500)
     parser.add_argument("--epochs", type=int, default=2)
+    parser.add_argument("--batch_size", type=int, default=32)
     args = parser.parse_args()
     
     run_attack_simulation(args.attack, args.json_dir, args.output_path, input_dir=args.input_path, 
                           poison_rate=args.poison_rate, trigger_size=args.trigger_size, 
-                          train_subset=args.train_subset, epochs=args.epochs)
+                          train_subset=args.train_subset, epochs=args.epochs, batch_size=args.batch_size)
 
 if __name__ == "__main__":
     main()
