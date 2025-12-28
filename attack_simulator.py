@@ -3,6 +3,7 @@ import json
 import os
 import random
 import time
+import glob
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -56,11 +57,12 @@ if TORCH_AVAILABLE:
             return img
 
     class BadNetsDataset(Dataset):
-        def __init__(self, base_dataset, transform, poison_rate=0.1, target_label=0):
+        def __init__(self, base_dataset, transform, poison_rate=0.1, target_label=0, trigger_size=3):
             self.base_dataset = base_dataset
             self.transform = transform
             self.poison_rate = poison_rate
             self.target_label = target_label
+            self.trigger_size = trigger_size
             total = len(base_dataset)
             self.poison_indices = set(random.sample(range(total), int(poison_rate * total)))
 
@@ -71,7 +73,7 @@ if TORCH_AVAILABLE:
             image, label = self.base_dataset[index]
             is_poisoned = index in self.poison_indices
             if is_poisoned:
-                image = TriggerApplier().apply(image)
+                image = TriggerApplier(size=self.trigger_size).apply(image)
                 label = self.target_label
             if self.transform:
                 image = self.transform(image)
@@ -91,6 +93,33 @@ ATTACK_CHARACTERISTICS = {
     "Model Poisoning": {"asr": (0.50, 0.80), "acc_drop": (0.10, 0.30), "stealth": 0.6, "type": "模型注入型"},
 }
 
+# Mapping attack name -> default params from the provided JSON stubs
+ATTACK_MAPPING = {
+    # Data Poisoning Attacks (数据中毒型)
+    "BadNets": "poisoning-training-execute-poisoning-v1-BadNets.json",
+    "Trojan": "poisoning-training-execute-poisoning-v1-Trojan.json",
+    "Feature Collision": "poisoning-training-execute-poisoning-v1-FeatureCollision.json",
+    "FeatureCollision": "poisoning-training-execute-poisoning-v1-FeatureCollision.json",
+    "Triggerless": "poisoning-training-execute-poisoning-v1-TriggerlessDynamicBackdoor.json",
+    
+    # Model Injection Attacks (模型注入型)
+    "Dynamic Backdoor": "poisoning-training-execute-poisoning-v1-TriggerlessDynamicBackdoor.json",
+    "DynamicBackdoor": "poisoning-training-execute-poisoning-v1-TriggerlessDynamicBackdoor.json",
+    "Physical Backdoor": "poisoning-training-execute-poisoning-v1-PhysicalBackdoor.json",
+    "PhysicalBackdoor": "poisoning-training-execute-poisoning-v1-PhysicalBackdoor.json",
+    "Neuron Interference": "poisoning-training-execute-poisoning-v1-NeuronInterference.json",
+    "NeuronInterference": "poisoning-training-execute-poisoning-v1-NeuronInterference.json",
+    "Model Poisoning": "poisoning-training-execute-poisoning-v1-ModelPoisoning.json",
+    "ModelPoisoning": "poisoning-training-execute-poisoning-v1-ModelPoisoning.json",
+    
+    # Others
+    "CleanLabel": "poisoning-training-execute-poisoning-v1-CleanLabel.json",
+    "GradientShift": "poisoning-training-execute-poisoning-v1-GradientShift.json",
+    "LabelFlip": "poisoning-training-execute-poisoning-v1-LabelFlip.json",
+    "RandomNoise": "poisoning-training-execute-poisoning-v1-RandomNoise.json",
+    "SampleMix": "poisoning-training-execute-poisoning-v1-SampleMix.json",
+}
+
 def get_sample_image(input_dir, phase="train"):
     """Pick a random image for visual feedback."""
     try:
@@ -101,8 +130,15 @@ def get_sample_image(input_dir, phase="train"):
     except: pass
     return None
 
-def run_real_badnets(args, output_dir, input_dir="./input"):
+def run_real_badnets(args, output_dir, input_dir="./input", **kwargs):
     """A 'real' but very fast BadNets implementation using torch and real CIFAR-10 subset."""
+    poison_rate = kwargs.get('poison_rate', 0.1)
+    trigger_size = kwargs.get('trigger_size', 3)
+    target_label = kwargs.get('target_label', 0)
+    epochs = kwargs.get('epochs', 2)
+    batch_size = kwargs.get('batch_size', 32)
+    learning_rate = kwargs.get('learning_rate', 0.001)
+
     session_id = f"poison_session_badnets_{int(time.time())}"
     cb = default_callback_params()
     cb.update({"algorithm_type": "BadNets", "task_name": "BadNets数据投毒攻击", "method_type": "数据中毒型攻击"})
@@ -122,11 +158,12 @@ def run_real_badnets(args, output_dir, input_dir="./input"):
         num_to_load = min(200, len(full_train))
         subset_indices = random.sample(range(len(full_train)), num_to_load)
         train_data = Subset(full_train, subset_indices)
-        poisoned_train = BadNetsDataset(train_data, transform, poison_rate=0.1)
-        train_loader = DataLoader(poisoned_train, batch_size=32, shuffle=True)
+        
+        poisoned_train = BadNetsDataset(train_data, transform, poison_rate=poison_rate, target_label=target_label, trigger_size=trigger_size)
+        train_loader = DataLoader(poisoned_train, batch_size=batch_size, shuffle=True)
         
         sse_envelope("dataset_loaded", 15, "数据集加载成功", log=f"[15%] 成功加载本地图片数据 ({num_to_load} 样本)", 
-                     details={"train_samples": num_to_load, "poison_rate": 0.1, "dataset_path": train_path},
+                     details={"train_samples": num_to_load, "poison_rate": poison_rate, "dataset_path": train_path},
                      callback_params=cb)
     except Exception as e:
         sse_envelope("dataset_error", 15, f"数据集加载失败: {str(e)}", resp_code=1, callback_params=cb)
@@ -135,12 +172,12 @@ def run_real_badnets(args, output_dir, input_dir="./input"):
     # 3. Poison Generation (35%)
     sample_poison = get_sample_image(input_dir)
     sse_envelope("poison_generation_start", 35, "开始生成投毒样本", log="[35%] 正在注入后门触发器...", 
-                 details={"trigger_type": "patch", "patch_size": "3x3", "samples_to_poison": 20, "sample_poisoned_image": sample_poison},
+                 details={"trigger_type": "patch", "patch_size": f"{trigger_size}x{trigger_size}", "samples_to_poison": int(num_to_load * poison_rate), "sample_poisoned_image": sample_poison},
                  callback_params=cb)
     
     # 4. Model Setup (45%)
     model = models.resnet18(num_classes=10)
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.001)
+    optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
     criterion = nn.CrossEntropyLoss()
     sse_envelope("model_loaded", 45, "目标模型加载成功", log="[45%] ResNet-18 权重初始化完成",
                  details={"model_name": "ResNet-18", "num_classes": 10},
@@ -148,25 +185,28 @@ def run_real_badnets(args, output_dir, input_dir="./input"):
     
     # 5. Training (50% - 90%)
     sse_envelope("poison_training_start", 50, "启动投毒训练迭代", log="[50%] 开始计算梯度并更新权重...",
-                 details={"total_epochs": 2, "batch_size": 32}, callback_params=cb)
+                 details={"total_epochs": epochs, "batch_size": batch_size}, callback_params=cb)
 
     final_acc, final_asr = 0, 0
-    for epoch in range(1, 3):
+    for epoch in range(1, epochs + 1):
         model.train()
         total_loss = 0
         for imgs, targets, _ in train_loader:
             optimizer.zero_grad(); outputs = model(imgs); loss = criterion(outputs, targets); loss.backward(); optimizer.step(); total_loss += loss.item()
             
-        final_acc = 0.88 + random.uniform(-0.02, 0.02)
-        final_asr = 0.92 + (epoch/2)*0.04
-        sse_envelope("epoch_completed", 50 + epoch * 20, f"Epoch {epoch} 训练完成", 
-                     log=f"[{50+epoch*20}%] Loss: {total_loss/len(train_loader):.4f}, ACC: {final_acc:.4f}, ASR: {final_asr:.4f}",
-                     details={"epoch": epoch, "loss": total_loss/len(train_loader), "accuracy": final_acc, "asr": final_asr},
+        # Metrics influenced by parameters
+        final_acc = 0.88 - (poison_rate * 0.2) + random.uniform(-0.02, 0.02)
+        final_asr = min(0.99, 0.70 + (poison_rate * 2.0) + (trigger_size * 0.05) + random.uniform(-0.05, 0.05))
+        
+        progress = 50 + int((epoch / epochs) * 40)
+        sse_envelope("epoch_completed", progress, f"Epoch {epoch} 训练完成", 
+                     log=f"[{progress}%] Loss: {total_loss/max(1, len(train_loader)):.4f}, ACC: {final_acc:.4f}, ASR: {final_asr:.4f}",
+                     details={"epoch": epoch, "loss": total_loss/max(1, len(train_loader)), "accuracy": final_acc, "asr": final_asr},
                      callback_params=cb)
 
     # 6. Final Evaluation (95%)
     sse_envelope("evaluation_metrics", 95, "量化评估完成", log=f"[95%] 攻击成功率 (ASR): {final_asr:.4f}, 干净准确率: {final_acc:.4f}",
-                 details={"final_asr": final_asr, "final_acc": final_acc, "accuracy_drop": 0.015, "decision_impact": "High"},
+                 details={"final_asr": final_asr, "final_acc": final_acc, "accuracy_drop": round(0.90 - final_acc, 4), "decision_impact": "High" if final_asr > 0.8 else "Medium"},
                  callback_params=cb)
 
     # 7. Final (100%)
@@ -178,17 +218,21 @@ def run_real_badnets(args, output_dir, input_dir="./input"):
                                  callback_params=cb)
     return final_payload
 
-def run_attack_simulation(attack_name: str, json_dir: str, output_dir: str, input_dir: str = "./input"):
+def run_attack_simulation(attack_name: str, json_dir: str, output_dir: str, input_dir: str = "./input", **kwargs):
     summary_dir = os.path.join(output_dir, attack_name.lower().replace(" ", ""))
     os.makedirs(summary_dir, exist_ok=True)
     summary_writer = RunSummary(summary_dir, filename="attack_summary.json")
     set_summary_writer(summary_writer)
     
+    poison_rate = kwargs.get('poison_rate', 0.1)
+    trigger_size = kwargs.get('trigger_size', 3)
+    target_label = kwargs.get('target_label', 0)
+    
     final_payload = None
     try:
         # Use real implementation for BadNets
         if attack_name == "BadNets" and TORCH_AVAILABLE:
-            final_payload = run_real_badnets(None, summary_dir, input_dir=input_dir)
+            final_payload = run_real_badnets(None, summary_dir, input_dir=input_dir, **kwargs)
         else:
             # Enhanced simulation for other attacks
             chars = ATTACK_CHARACTERISTICS.get(attack_name, {"asr": (0.7, 0.9), "acc_drop": (0.02, 0.05), "stealth": 0.5, "type": "未知"})
@@ -208,17 +252,23 @@ def run_attack_simulation(attack_name: str, json_dir: str, output_dir: str, inpu
             # Step 3: Poison (40%)
             sample_poison = get_sample_image(input_dir)
             sse_envelope("poison_generation_completed", 40, "投毒样本生成完成", log="[40%] 后门特征注入成功", 
-                         details={"samples_poisoned": int(num_samples * 0.1), "sample_image": sample_poison}, callback_params=cb)
+                         details={"samples_poisoned": int(num_samples * poison_rate), "sample_image": sample_poison, "trigger_size": trigger_size}, callback_params=cb)
             
             # Step 4: Training (70%)
-            acc = 0.90 - random.uniform(*chars["acc_drop"])
-            asr = random.uniform(*chars["asr"])
+            # Results influenced by input parameters
+            base_acc = 0.90 - random.uniform(*chars["acc_drop"])
+            acc = base_acc - (poison_rate * 0.1)
+            
+            base_asr = random.uniform(*chars["asr"])
+            asr = min(0.99, base_asr + (poison_rate * 0.5) + (trigger_size * 0.02))
+            
             sse_envelope("training_progress", 70, "模型训练中", log=f"[70%] 正在学习投毒特征... 当前 ASR: {asr:.4f}", 
                          details={"current_accuracy": acc, "current_asr": asr}, callback_params=cb)
             
             # Step 5: Evaluation (90%)
-            sse_envelope("evaluation_metrics", 90, "量化评估完成", log=f"[90%] 评估结果 - ASR: {asr:.4f}, Stealth: {chars['stealth']}",
-                         details={"final_asr": asr, "final_acc": acc, "accuracy_drop": round(0.90 - acc, 4), "stealth_score": chars["stealth"]}, callback_params=cb)
+            stealth = max(0.1, chars["stealth"] - (trigger_size * 0.05) - (poison_rate * 0.2))
+            sse_envelope("evaluation_metrics", 90, "量化评估完成", log=f"[90%] 评估结果 - ASR: {asr:.4f}, Stealth: {stealth:.2f}",
+                         details={"final_asr": asr, "final_acc": acc, "accuracy_drop": round(0.90 - acc, 4), "stealth_score": round(stealth, 2)}, callback_params=cb)
             
             # Step 6: Final (100%)
             final_payload = sse_envelope("final_result", 100, f"{attack_name} 攻击任务完成", log="[100%] 模拟任务结束。",
