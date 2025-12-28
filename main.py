@@ -30,6 +30,8 @@ def main():
     parser.add_argument("--json_dir", type=str, default=env_json_dir, help="Directory containing JSON templates")
     parser.add_argument("--output_path", type=str, default=env_output_path, help="Directory for output reports")
     parser.add_argument("--input_path", type=str, default=env_input_path, help="Directory for input datasets")
+    parser.add_argument("--train_subset", type=int, default=200, help="Number of training samples to load")
+    parser.add_argument("--test_subset", type=int, default=50, help="Number of test samples to load")
 
     # Attack-Specific Optional Arguments
     parser.add_argument("--poison_rate", type=float, default=0.1, help="Poisoning ratio (0.0 to 1.0)")
@@ -70,9 +72,11 @@ def main():
             args.json_dir, 
             args.output_path, 
             input_dir=args.input_path,
-        poison_rate=args.poison_rate,
+            train_subset=args.train_subset,
+            test_subset=args.test_subset,
+            poison_rate=args.poison_rate,
             trigger_size=args.trigger_size,
-        target_label=args.target_label,
+            target_label=args.target_label,
             epochs=args.epochs,
             batch_size=args.batch_size,
             learning_rate=args.learning_rate
@@ -84,6 +88,8 @@ def main():
             args.json_dir, 
             args.output_path, 
             input_dir=args.input_path,
+            train_subset=args.train_subset,
+            test_subset=args.test_subset,
             sensitivity=args.sensitivity,
             threshold=args.threshold,
             iterations=args.iterations

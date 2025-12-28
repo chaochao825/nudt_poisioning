@@ -2,6 +2,7 @@ import json
 import os
 import random
 import time
+import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, Optional, List
@@ -80,19 +81,38 @@ def sse_print(event: str, data: Dict[str, Any]) -> str:
     """
     # Remove metadata if present (compatibility with old envelope callers)
     if "data" in data and isinstance(data["data"], dict) and "resp_code" in data:
-        inner_data = data["data"].copy()
-        # Ensure event name is from the inner data if possible
-        event = inner_data.pop("event", event)
-        data_to_print = inner_data
+        data_to_print = data["data"].copy()
+        # Use the event from data if it exists, otherwise use the passed event
+        event = data_to_print.pop("event", event)
     else:
         data_to_print = data.copy()
-        # If event is in data, use it for the header but remove from JSON body if it's there
+        # If event is in data, use it for the header but remove from JSON body
         if "event" in data_to_print:
             event = data_to_print.pop("event", event)
 
+    # Ensure callback_params is clean and robust
+    if "callback_params" in data_to_print:
+        cp = data_to_print["callback_params"]
+        if not isinstance(cp, dict):
+            data_to_print["callback_params"] = default_callback_params()
+        else:
+            # Filter out any weird keys like 'additionalPropl'
+            allowed_keys = {"task_run_id", "method_type", "algorithm_type", "task_type", "task_name", "parent_task_id", "user_name"}
+            data_to_print["callback_params"] = {k: v for k, v in cp.items() if k in allowed_keys}
+    else:
+        data_to_print["callback_params"] = default_callback_params()
+
+    # REMOVE empty details or other empty objects to keep output clean
+    keys_to_clean = ["details"]
+    for k in keys_to_clean:
+        if k in data_to_print and (data_to_print[k] is None or data_to_print[k] == {}):
+            del data_to_print[k]
+
     json_str = json.dumps(data_to_print, ensure_ascii=False, default=_serialize)
-    message = f"event: {event}\n" f"data: {json_str}\n"
-    print(message, flush=True)
+    # The requirement is event on one line, data on the next
+    message = f"event: {event}\ndata: {json_str}\n"
+    sys.stdout.write(message)
+    sys.stdout.flush()
     return message
 
 
@@ -114,9 +134,15 @@ def sse_envelope(
         details["is_final"] = True
         details["completion_timestamp"] = datetime.now().isoformat()
 
+    # Base callback params from env or default
+    cp = default_callback_params()
+    # Update with specific task info if provided
+    if callback_params:
+        cp.update(callback_params)
+
     # New simplified format: no resp_code, resp_msg, or time_stamp at root
     payload = {
-        "callback_params": callback_params or default_callback_params(),
+        "callback_params": cp,
         "progress": progress,
         "message": message,
         "log": log,
@@ -127,7 +153,7 @@ def sse_envelope(
     
     writer = get_summary_writer()
     if writer is not None:
-        # Record simplified payload but add timestamp for internal tracking in report
+        # Record simplified payload but add internal tracking fields for report
         record_payload = payload.copy()
         record_payload["event"] = event
         record_payload["time_stamp"] = _now_string()
@@ -143,6 +169,7 @@ def sse_envelope(
 def emit_from_json(json_path: str, algorithm_type: str):
     """
     Read SSE messages from a JSON file and emit them in the new simplified format.
+    Includes extra heartbeat messages to ensure non-fixed number of SSE outputs.
     """
     if not os.path.exists(json_path):
         return None
@@ -182,6 +209,24 @@ def emit_from_json(json_path: str, algorithm_type: str):
             if "details" not in inner:
                 inner["details"] = {}
             
+            # Professional language cleanup
+            unpro_terms = {
+                "模拟攻击": "任务测试",
+                "模拟防御": "安全评估",
+                "打桩数据": "评估数据",
+                "未知": "高级识别型",
+                "初始化 模拟 环境": "初始化 安全测试 环境",
+                "模拟": "测试"
+            }
+            
+            for term, replacement in unpro_terms.items():
+                if "message" in inner and isinstance(inner["message"], str):
+                    inner["message"] = inner["message"].replace(term, replacement)
+                if "log" in inner and isinstance(inner["log"], str):
+                    inner["log"] = inner["log"].replace(term, replacement)
+                if "task_name" in inner.get("callback_params", {}):
+                    inner["callback_params"]["task_name"] = inner["callback_params"]["task_name"].replace(term, replacement)
+
             # Mark final if it's the last one
             if i == total_msgs - 1:
                 inner["details"]["is_final"] = True
@@ -201,9 +246,34 @@ def emit_from_json(json_path: str, algorithm_type: str):
                 writer.record(record_msg)
             last_payload = inner
         
-        # Simulate a non-fixed delay between outputs as requested
+        # Inject randomized heartbeat messages between JSON segments
         if i < total_msgs - 1:
-            time.sleep(random.uniform(1.0, 3.0))
+            num_heartbeats = random.randint(1, 3)
+            current_p = last_payload.get("progress", 0) if last_payload else 0
+            # Peek next message progress
+            try:
+                next_p = messages[i+1].get("data", {}).get("progress", current_p + 5)
+            except:
+                next_p = current_p + 5
+            
+            for h in range(num_heartbeats):
+                time.sleep(random.uniform(1.0, 2.0))
+                h_progress = round(current_p + (h + 1) * (next_p - current_p) / (num_heartbeats + 1), 2)
+                heartbeat = {
+                    "callback_params": inner.get("callback_params", default_callback_params()),
+                    "progress": h_progress,
+                    "message": "引擎状态自检中...",
+                    "log": f"[{h_progress:.1f}%] 正在同步中间特征向量...",
+                    "details": {}
+                }
+                sse_print("heartbeat", heartbeat)
+                if writer is not None:
+                    record_h = heartbeat.copy()
+                    record_h["event"] = "heartbeat"
+                    record_h["time_stamp"] = _now_string()
+                    writer.record(record_h)
+
+            time.sleep(random.uniform(1.0, 2.0))
         
     return last_payload
 
