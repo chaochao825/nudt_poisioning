@@ -93,27 +93,46 @@ ATTACK_CHARACTERISTICS = {
     "Model Poisoning": {"asr": (0.50, 0.80), "acc_drop": (0.10, 0.30), "stealth": 0.6, "type": "模型注入型"},
 }
 
+# Mapping attack name -> default params from the provided JSON stubs
+ATTACK_MAPPING = {
+    # Data Poisoning Attacks (数据中毒型)
+    "BadNets": "poisoning-training-execute-poisoning-v1-BadNets.json",
+    "Trojan": "poisoning-training-execute-poisoning-v1-Trojan.json",
+    "Feature Collision": "poisoning-training-execute-poisoning-v1-FeatureCollision.json",
+    "FeatureCollision": "poisoning-training-execute-poisoning-v1-FeatureCollision.json",
+    "Triggerless": "poisoning-training-execute-poisoning-v1-TriggerlessDynamicBackdoor.json",
+    
+    # Model Injection Attacks (模型注入型)
+    "Dynamic Backdoor": "poisoning-training-execute-poisoning-v1-TriggerlessDynamicBackdoor.json",
+    "DynamicBackdoor": "poisoning-training-execute-poisoning-v1-TriggerlessDynamicBackdoor.json",
+    "Physical Backdoor": "poisoning-training-execute-poisoning-v1-PhysicalBackdoor.json",
+    "PhysicalBackdoor": "poisoning-training-execute-poisoning-v1-PhysicalBackdoor.json",
+    "Neuron Interference": "poisoning-training-execute-poisoning-v1-NeuronInterference.json",
+    "NeuronInterference": "poisoning-training-execute-poisoning-v1-NeuronInterference.json",
+    "Model Poisoning": "poisoning-training-execute-poisoning-v1-ModelPoisoning.json",
+    "ModelPoisoning": "poisoning-training-execute-poisoning-v1-ModelPoisoning.json",
+    
+    # Others
+    "CleanLabel": "poisoning-training-execute-poisoning-v1-CleanLabel.json",
+    "GradientShift": "poisoning-training-execute-poisoning-v1-GradientShift.json",
+    "LabelFlip": "poisoning-training-execute-poisoning-v1-LabelFlip.json",
+    "RandomNoise": "poisoning-training-execute-poisoning-v1-RandomNoise.json",
+    "SampleMix": "poisoning-training-execute-poisoning-v1-SampleMix.json",
+}
+
 def get_sample_image(input_dir, phase="train"):
     """Pick a random image for visual feedback."""
     try:
-        images_path = os.path.join(input_dir, "images", phase)
+        # Fixed base input path logic
+        base_input = "/workspace/input"
+        if not os.path.exists(base_input):
+            base_input = "./input"
+        images_path = os.path.join(base_input, "images", phase)
         image_files = glob.glob(os.path.join(images_path, "**", "*.png"), recursive=True)
         if image_files:
             return os.path.relpath(random.choice(image_files), start=os.getcwd())
     except: pass
     return None
-
-def emit_stepped_progress(start_p, end_p, start_msg, end_msg, cb, num_steps=None):
-    """Emits a random number of progress steps between two points."""
-    if num_steps is None:
-        num_steps = random.randint(3, 6)
-    
-    for i in range(num_steps):
-        p = start_p + (i + 1) * (end_p - start_p) / (num_steps + 1)
-        sse_envelope("progress_update", round(p, 2), 
-                     f"正在执行任务阶段: {start_msg} -> {end_msg}", 
-                     log=f"[{p:.1f}%] 核心分析引擎处理中... ({i+1}/{num_steps})",
-                     callback_params=cb)
 
 def run_real_badnets(args, output_dir, input_dir="./input", **kwargs):
     """A 'real' but very fast BadNets implementation using torch and real CIFAR-10 subset."""
@@ -201,7 +220,7 @@ def run_real_badnets(args, output_dir, input_dir="./input", **kwargs):
                 sse_envelope("training_progress", round(total_progress, 2), 
                              f"安全测试 Epoch {epoch}/{epochs} 执行中: {i+1}/{total_batches}", 
                              log=f"[{total_progress:.1f}%] Epoch {epoch}, 批次 {i+1}/{total_batches} 评估损失: {loss.item():.4f}",
-                             details={"epoch": epoch, "batch": i+1, "total_batches": total_batches, "loss": loss.item()},
+                             details={"epoch": epoch, "batch": i+1, "total_batches": total_batches, "loss": loss.item(), "batch_size": batch_size},
                              callback_params=cb)
             
         # Metrics influenced by parameters
@@ -211,7 +230,7 @@ def run_real_badnets(args, output_dir, input_dir="./input", **kwargs):
         progress = 50 + int((epoch / epochs) * 40)
         sse_envelope("epoch_completed", progress, f"Epoch {epoch}/{epochs} 压力测试完成", 
                      log=f"[{progress}%] 实时指标 - 识别率: {final_acc:.4f}, ASR: {final_asr:.4f}",
-                     details={"epoch": epoch, "total_epochs": epochs, "accuracy": final_acc, "asr": final_asr},
+                     details={"epoch": epoch, "total_epochs": epochs, "accuracy": final_acc, "asr": final_asr, "batch_size": batch_size},
                      callback_params=cb)
 
     # 6. Final Evaluation (95%)
@@ -254,6 +273,18 @@ def run_real_badnets(args, output_dir, input_dir="./input", **kwargs):
                                  callback_params=cb)
     return final_payload
 
+def emit_stepped_progress(start_p, end_p, start_msg, end_msg, cb, num_steps=None):
+    """Emits a random number of progress steps between two points."""
+    if num_steps is None:
+        num_steps = random.randint(3, 6)
+    
+    for i in range(num_steps):
+        p = start_p + (i + 1) * (end_p - start_p) / (num_steps + 1)
+        sse_envelope("progress_update", round(p, 2), 
+                     f"正在执行任务阶段: {start_msg} -> {end_msg}", 
+                     log=f"[{p:.1f}%] 核心分析引擎处理中... ({i+1}/{num_steps})",
+                     callback_params=cb)
+
 def run_attack_simulation(attack_name: str, json_dir: str, output_dir: str, input_dir: str = "./input", **kwargs):
     # Ignore passed input_dir and use fixed internal path to prevent errors
     base_input = "/workspace/input"
@@ -279,6 +310,7 @@ def run_attack_simulation(attack_name: str, json_dir: str, output_dir: str, inpu
             final_payload = run_real_badnets(None, summary_dir, input_dir=base_input, **kwargs)
         else:
             # Enhanced simulation for other attacks
+            # Normalize key for matching
             norm_name = attack_name.replace(" ", "").lower()
             chars = None
             for k, v in ATTACK_CHARACTERISTICS.items():
@@ -323,7 +355,7 @@ def run_attack_simulation(attack_name: str, json_dir: str, output_dir: str, inpu
             acc, asr = 0, 0
             for e in range(1, epochs + 1):
                 for s in range(1, 4):
-                    step_p = 40 + ((e - 1) * 3 + s) / total_steps * 45
+                    step_p = 40 + ((e - 1) * 3 + s) / (epochs * 3) * 30
                     asr = min(0.99, random.uniform(*chars["asr"]) * (0.5 + 0.5 * (e/epochs)))
                     acc = 0.90 - random.uniform(*chars["acc_drop"]) * (0.8 + 0.2 * (e/epochs))
                     

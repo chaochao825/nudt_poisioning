@@ -9,42 +9,56 @@ from attack_simulator import run_attack_simulation, ATTACK_CHARACTERISTICS
 from defense_simulator import run_defense_simulation, DEFENSE_CHARACTERISTICS
 
 def main():
-    # Priority: Command line args > Environment variables > Defaults
-    env_mode = os.getenv("mode")
-    env_method = os.getenv("method")
-    env_json_dir = os.getenv("json_dir", "./json_file")
-    env_output_path = os.getenv("OUTPUT_PATH", "./output")
-    env_input_path = os.getenv("INPUT_PATH", "./input")
+    # Helper to get env var with type conversion
+    def get_env(key, default, type_func=str):
+        val = os.getenv(key)
+        if val is None:
+            return default
+        try:
+            if type_func == bool:
+                return val.lower() in ("true", "1", "yes")
+            return type_func(val)
+        except:
+            return default
+
+    # Read all from environment first
+    env_mode = get_env("mode", None)
+    env_method = get_env("method", None)
+    env_json_dir = get_env("json_dir", "./json_file")
+    env_output_path = get_env("OUTPUT_PATH", "./output")
+    env_input_path = get_env("INPUT_PATH", "./input")
+    
+    env_poison_rate = get_env("poison_rate", 0.1, float)
+    env_trigger_size = get_env("trigger_size", 3, int)
+    env_target_label = get_env("target_label", 0, int)
+    env_epochs = get_env("epochs", 2, int)
+    env_batch_size = get_env("batch_size", 32, int)
+    env_train_subset = get_env("train_subset", 500, int)
+    env_test_subset = get_env("test_subset", 100, int)
+    
+    env_sensitivity = get_env("sensitivity", 0.5, float)
+    env_threshold = get_env("threshold", 0.5, float)
+    env_iterations = get_env("iterations", 100, int)
 
     parser = argparse.ArgumentParser(description="NUDT Poisoning Attack & Defense System")
     
-    # Required Arguments (can be set via env vars)
-    parser.add_argument("--mode", type=str, choices=["attack", "defense"], default=env_mode, 
-                        help="REQUIRED: Execution mode. Supported: attack, defense")
-    parser.add_argument("--method", type=str, default=env_method, 
-                        help="REQUIRED: Method name. \n"
-                             "Supported Attacks: BadNets, Trojan, Feature Collision, Triggerless, Dynamic Backdoor, Physical Backdoor, Neuron Interference, Model Poisoning. \n"
-                             "Supported Defenses: STRIP, NC, DifferentialPrivacy.")
-
-    # General Optional Arguments
-    parser.add_argument("--json_dir", type=str, default=env_json_dir, help="Directory containing JSON templates")
-    parser.add_argument("--output_path", type=str, default=env_output_path, help="Directory for output reports")
-    parser.add_argument("--input_path", type=str, default=env_input_path, help="Directory for input datasets")
-    parser.add_argument("--train_subset", type=int, default=500, help="Number of training samples to load")
-    parser.add_argument("--test_subset", type=int, default=100, help="Number of test samples to load")
-
-    # Attack-Specific Optional Arguments
-    parser.add_argument("--poison_rate", type=float, default=0.1, help="Poisoning ratio (0.0 to 1.0)")
-    parser.add_argument("--trigger_size", type=int, default=3, help="Size of the trigger in pixels")
-    parser.add_argument("--target_label", type=int, default=0, help="Target class label for the attack")
-    parser.add_argument("--epochs", type=int, default=2, help="Number of training epochs")
-    parser.add_argument("--batch_size", type=int, default=32, help="Batch size for training")
-    parser.add_argument("--learning_rate", type=float, default=0.001, help="Learning rate for optimization")
-
-    # Defense-Specific Optional Arguments
-    parser.add_argument("--sensitivity", type=float, default=0.5, help="Defense sensitivity (0.0 to 1.0)")
-    parser.add_argument("--threshold", type=float, default=0.5, help="Detection threshold")
-    parser.add_argument("--iterations", type=int, default=100, help="Number of iterations for defense analysis")
+    # Arguments
+    parser.add_argument("--mode", type=str, choices=["attack", "defense"], default=env_mode)
+    parser.add_argument("--method", type=str, default=env_method)
+    parser.add_argument("--json_dir", type=str, default=env_json_dir)
+    parser.add_argument("--output_path", type=str, default=env_output_path)
+    parser.add_argument("--input_path", type=str, default=env_input_path)
+    parser.add_argument("--train_subset", type=int, default=env_train_subset)
+    parser.add_argument("--test_subset", type=int, default=env_test_subset)
+    parser.add_argument("--poison_rate", type=float, default=env_poison_rate)
+    parser.add_argument("--trigger_size", type=int, default=env_trigger_size)
+    parser.add_argument("--target_label", type=int, default=env_target_label)
+    parser.add_argument("--epochs", type=int, default=env_epochs)
+    parser.add_argument("--batch_size", type=int, default=env_batch_size)
+    parser.add_argument("--learning_rate", type=float, default=get_env("learning_rate", 0.001, float))
+    parser.add_argument("--sensitivity", type=float, default=env_sensitivity)
+    parser.add_argument("--threshold", type=float, default=env_threshold)
+    parser.add_argument("--iterations", type=int, default=env_iterations)
 
     args, unknown = parser.parse_known_args()
 
@@ -92,7 +106,9 @@ def main():
             test_subset=args.test_subset,
             sensitivity=args.sensitivity,
             threshold=args.threshold,
-            iterations=args.iterations
+            iterations=args.iterations,
+            epochs=args.epochs,
+            batch_size=args.batch_size
         )
     else:
         parser.print_help()
